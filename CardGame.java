@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CardGame {
@@ -53,6 +55,7 @@ public class CardGame {
             System.out.println("The number of lines in pack file should be " + numPlayers * 8);
             return;
         }
+        System.out.println(countFrequencies(packArr, numPlayers));
         //create array of player object
         Player[] playerObj = new Player[numPlayers];
         //create & initialize actual player objects using constructor
@@ -61,6 +64,7 @@ public class CardGame {
         }
         System.out.println(packArr.toString());
         dealCards(packArr, numPlayers, playerObj);
+        System.out.println(playerObj[3].getDeck(3));
     }
 
 
@@ -90,6 +94,54 @@ public class CardGame {
             }
             System.out.println("Assigned Card: " + packArr.get(i));
             i++;
+        }
+    }
+
+
+    public static boolean countFrequencies(ArrayList<Integer> packArr, int numPlayers) {
+        // hashmap to store the frequency of element
+        Map<String, Integer> dict = new HashMap<>();
+
+        for (Integer i : packArr) {
+            String key = i.toString();
+            Integer j = dict.get(key);
+            dict.put(key, (j == null) ? 1 : j + 1);
+        }
+
+        for (Map.Entry<String, Integer> val : dict.entrySet()) {
+            System.out.println("Element " + val.getKey() + " "
+                    + "occurs"
+                    + ": " + val.getValue() + " times");
+        }
+
+        boolean playGame = false;
+
+        for (int p = 1; p < numPlayers + 1; p++) {
+            String key = Integer.toString(p);
+            try {
+                if (dict.get(key) >= 4) {
+                    System.out.println("\nPlayer " + p + " could collect a winning hand.");
+                    playGame = true;
+                } else {
+                    System.out.println("\nPlayer " + p + " is at a disadvantage as there are\nfewer than four of their preferred cards.");
+                }
+            } catch (NullPointerException e) {
+                System.out.println("\nPlayer " + p + " has no preferred cards in pack.");
+            }
+        }
+
+        if (playGame) {
+            System.out.println("\nThere is guaranteed to be a winner.");
+            return true;
+        } else {
+            // displaying the occurrence of elements in the arraylist
+            for (Map.Entry<String, Integer> val : dict.entrySet()) {
+                if (val.getValue() >= 4) {
+                    System.out.println("\nThere is the possibility of a winning hand but the game may stagnate.");
+                    playGame = true;
+                }
+            }
+            return playGame;
         }
     }
 }
