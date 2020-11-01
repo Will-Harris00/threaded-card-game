@@ -6,9 +6,29 @@ import java.util.Scanner;
 
 public class CardGame {
     public static void main (String[] args) throws IOException {
+        int numPlayers = validateInput();
+
+        ArrayList<Integer> packArr = importPack(numPlayers);
+        //create array of player object
+        Player[] playerObj = new Player[numPlayers];
+        CardDeck[] deckObj = new CardDeck[numPlayers];
+        //create & initialize actual player objects using constructor
+        for (int p = 0; p < numPlayers; p++) {
+            playerObj[p] = new Player();
+            deckObj[p] = new CardDeck();
+        }
+
+        System.out.println("\nCard Pack: " + packArr.toString());
+        dealCards(packArr, numPlayers, playerObj, deckObj);
+        System.out.println(deckObj[3].getDeckCard(3).getValue());
+        System.out.println(deckObj[3].getDeckCard(3).getHolder());
+    }
+
+
+    public static int validateInput() {
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
-        int numPlayers;
+        int numPlayers = 0;
         try {
             numPlayers = Integer.parseInt(inputPlayers.nextLine());
             while (numPlayers < 2) {
@@ -18,56 +38,56 @@ public class CardGame {
             }
         } catch (NumberFormatException e) {
             System.out.println("Input must be an integer.");
-            return;
+            System.exit(1);
         }
+        return numPlayers;
+    }
 
+
+    public static ArrayList<Integer> importPack(int numPlayers) throws IOException {
         Scanner inputPack = new Scanner(System.in);
         System.out.print("Please enter location of pack to load: ");
         String packIn = inputPack.nextLine();
-        BufferedReader in;
+        BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(packIn));
         } catch (FileNotFoundException e) {
             System.out.println("Please specify the pack to load.");
-            return;
+            System.exit(1);
         }
 
         String line;
         ArrayList<Integer> packArr = new ArrayList<>();
         int numLine = 0;
         while((line = in.readLine()) != null){
-            int value;
+            int value = 0;
             try {
                 value = Integer.parseInt(line);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid pack - Each line must only contain a positive integer.");
-                return;
+                System.exit(1);
             }
             if (value > 0) {
                 packArr.add(value);
             } else {
                 System.out.println("Invalid pack - Each line must only contain a positive integer.");
-                return;
+                System.exit(1);
             }
             numLine++;
         }
         if (numLine != 8 * numPlayers) {
-            System.out.println("The number of lines in pack file should be " + numPlayers * 8);
-            return;
+            System.out.println("The number of lines in the pack file should be " + numPlayers * 8);
+            System.exit(1);
         }
-        System.out.println(countFrequencies(packArr, numPlayers));
-        //create array of player object
-        Player[] playerObj = new Player[numPlayers];
-        CardDeck[] deckObj = new CardDeck[numPlayers];
-        //create & initialize actual player objects using constructor
-        for (int p = 0; p < numPlayers; p++) {
-            playerObj[p] = new Player();
-            deckObj[p] = new CardDeck();
+
+        boolean playGame = countFrequencies(packArr, numPlayers);
+        System.out.println("\nPlay Game: " + playGame);
+
+        if (!playGame) {
+            System.exit(1);
         }
-        System.out.println(packArr.toString());
-        dealCards(packArr, numPlayers, playerObj, deckObj);
-        System.out.println(deckObj[3].getDeckCard(3).getValue());
-        System.out.println(deckObj[3].getDeckCard(3).getHolder());
+
+        return packArr;
     }
 
 
