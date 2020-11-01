@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CardGame {
@@ -32,12 +31,27 @@ public class CardGame {
         }
 
         String line;
-        ArrayList<String> packArr = new ArrayList<>();
+        ArrayList<Integer> packArr = new ArrayList<>();
+        int numLine = 0;
         while((line = in.readLine()) != null){
-            if (line.matches("[0-9]")) {
-                System.out.println(line);
-                packArr.add(line);
+            int value;
+            try {
+                value = Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid pack - Each line must only contain a positive integer.");
+                return;
             }
+            if (value > 0) {
+                packArr.add(value);
+            } else {
+                System.out.println("Invalid pack - Each line must only contain a positive integer.");
+                return;
+            }
+            numLine++;
+        }
+        if (numLine != 8 * numPlayers) {
+            System.out.println("The number of lines in pack file should be " + numPlayers * 8);
+            return;
         }
         System.out.println(packArr.toString());
     }
