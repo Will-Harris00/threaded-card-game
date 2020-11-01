@@ -9,13 +9,13 @@ public class CardGame {
         System.out.print("Please enter the number of players: ");
         int numPlayers;
         try {
-            numPlayers = inputPlayers.nextInt();
+            numPlayers = Integer.parseInt(inputPlayers.nextLine());
             while (numPlayers < 2) {
                 System.out.println("Input must be a positive integer with a minimum of two players.");
                 System.out.print("Please enter the number of players: ");
                 numPlayers = inputPlayers.nextInt();
             }
-        } catch (InputMismatchException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Input must be an integer.");
             return;
         }
