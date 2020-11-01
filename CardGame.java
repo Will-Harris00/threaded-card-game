@@ -53,6 +53,43 @@ public class CardGame {
             System.out.println("The number of lines in pack file should be " + numPlayers * 8);
             return;
         }
+        //create array of player object
+        Player[] playerObj = new Player[numPlayers];
+        //create & initialize actual player objects using constructor
+        for (int p = 0; p < numPlayers; p++) {
+            playerObj[p] = new Player();
+        }
         System.out.println(packArr.toString());
+        dealCards(packArr, numPlayers, playerObj);
+    }
+
+
+    public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj) {
+        int j = 0;
+        int i = 0;
+        while (i < packArr.size()) {
+            while (playerObj[numPlayers - 1].handSize() < 4) {
+                playerObj[j].addToHand(packArr.get(i));
+                System.out.println("\nHand Size: " + playerObj[j].handSize());
+                System.out.println("Player: " + (j + 1));
+                if (j < numPlayers - 1) {
+                    j++;
+                } else {
+                    j = 0;
+                }
+                System.out.println("Assigned Card: " + packArr.get(i));
+                i++;
+            }
+            playerObj[j].addToDeck(packArr.get(i));
+            System.out.println("\nDeck Size: " + playerObj[j].deckSize());
+            System.out.println("Deck: " + (j + 1));
+            if (j < numPlayers - 1) {
+                j++;
+            } else {
+                j = 0;
+            }
+            System.out.println("Assigned Card: " + packArr.get(i));
+            i++;
+        }
     }
 }
