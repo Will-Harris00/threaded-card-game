@@ -58,22 +58,28 @@ public class CardGame {
         System.out.println(countFrequencies(packArr, numPlayers));
         //create array of player object
         Player[] playerObj = new Player[numPlayers];
+        CardDeck[] deckObj = new CardDeck[numPlayers];
         //create & initialize actual player objects using constructor
         for (int p = 0; p < numPlayers; p++) {
             playerObj[p] = new Player();
+            deckObj[p] = new CardDeck();
         }
         System.out.println(packArr.toString());
-        dealCards(packArr, numPlayers, playerObj);
-        System.out.println(playerObj[3].getDeck(3));
+        dealCards(packArr, numPlayers, playerObj, deckObj);
+        System.out.println(deckObj[3].getDeckCard(3).getValue());
+        System.out.println(deckObj[3].getDeckCard(3).getHolder());
     }
 
 
-    public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj) {
+    public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj, CardDeck[] deckObj) {
         int j = 0;
         int i = 0;
         while (i < packArr.size()) {
             while (playerObj[numPlayers - 1].handSize() < 4) {
-                playerObj[j].addToHand(packArr.get(i));
+                Card c = new Card();
+                c.setValue(packArr.get(i));
+                c.setHolder(j+1);
+                playerObj[j].addToHand(c);
                 System.out.println("\nHand Size: " + playerObj[j].handSize());
                 System.out.println("Player: " + (j + 1));
                 if (j < numPlayers - 1) {
@@ -84,8 +90,11 @@ public class CardGame {
                 System.out.println("Assigned Card: " + packArr.get(i));
                 i++;
             }
-            playerObj[j].addToDeck(packArr.get(i));
-            System.out.println("\nDeck Size: " + playerObj[j].deckSize());
+            Card c = new Card();
+            c.setValue(packArr.get(i));
+            c.setHolder(j+1);
+            deckObj[j].addToDeck(c);
+            System.out.println("\nDeck Size: " + deckObj[j].deckSize());
             System.out.println("Deck: " + (j + 1));
             if (j < numPlayers - 1) {
                 j++;
