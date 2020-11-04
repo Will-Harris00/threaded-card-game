@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends Thread {
+    private final int number;
     private ArrayList<Card> hand = new ArrayList<>();
+
+    public Player(int number) { this.number = number; }
+
+    public int getOwner() { return number; }
 
     public void setHandCard(int index, Card val) { this.hand.set(index, val); }
 
@@ -12,4 +17,8 @@ public class Player {
     public void addToHand (Card val) { this.hand.add(val); }
 
     public int handSize() { return this.hand.size(); }
+
+    public void run () {
+        System.out.println(CardGame.playerObj[getOwner()-1].getHandCard(0).getValue());
+    }
 }

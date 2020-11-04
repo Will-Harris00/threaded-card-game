@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 
 public class CardDeck {
+    private final int number;
     private ArrayList<Card> deck = new ArrayList<>();
+
+    public CardDeck(int number) { this.number = number; }
+
+    public int getOwner() { return number; }
 
     public void setDeckCard(int index, Card val) { this.deck.set(index, val); }
 

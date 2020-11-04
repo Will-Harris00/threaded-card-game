@@ -5,23 +5,33 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class CardGame {
+    //create array of player hand and card deck objects
+    public static Player[] playerObj;
+    public static CardDeck[] deckObj;
+
     public static void main (String[] args) throws IOException {
         int numPlayers = validateInput();
 
         ArrayList<Integer> packArr = importPack(numPlayers);
-        //create array of player object
-        Player[] playerObj = new Player[numPlayers];
-        CardDeck[] deckObj = new CardDeck[numPlayers];
+        // initialise array of player hand and deck objects
+        playerObj = new Player[numPlayers];
+        deckObj = new CardDeck[numPlayers];
         //create & initialize actual player objects using constructor
         for (int p = 0; p < numPlayers; p++) {
-            playerObj[p] = new Player();
-            deckObj[p] = new CardDeck();
+            playerObj[p] = new Player(p + 1);
+            deckObj[p] = new CardDeck(p + 1);
         }
 
         System.out.println("\nCard Pack: " + packArr.toString());
         dealCards(packArr, numPlayers, playerObj, deckObj);
         System.out.println(deckObj[3].getDeckCard(3).getValue());
         System.out.println(deckObj[3].getDeckCard(3).getHolder());
+
+        for (Player player : playerObj) {
+            player.start();
+            player.setName("Player" + player.getOwner());
+            System.out.println(player.getName());
+        }
     }
 
 
