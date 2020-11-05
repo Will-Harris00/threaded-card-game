@@ -18,7 +18,21 @@ public class Player extends Thread {
 
     public int handSize() { return this.hand.size(); }
 
+    public boolean identical() {
+        boolean identical = false;
+        if (getHandCard(0).getValue() == getHandCard(1).getValue()
+                && getHandCard(1).getValue() == getHandCard(2).getValue()
+                && getHandCard(2).getValue() == getHandCard(3).getValue()) {
+            identical = true;
+        }
+        return identical;
+    }
+
     public void run () {
-        System.out.println(CardGame.playerObj[getOwner()-1].getHandCard(0).getValue());
+        if (identical()) {
+            System.out.println("player " + getOwner() + " wins");
+        } else {
+            System.out.println(CardGame.playerObj[getOwner() - 1].getHandCard(0).getValue());
+        }
     }
 }
