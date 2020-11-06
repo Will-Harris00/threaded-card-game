@@ -8,6 +8,7 @@ public class CardGame {
     //create array of player hand and card deck objects
     public static Player[] playerObj;
     public static CardDeck[] deckObj;
+    static int numPlayers;
 
     public static void main (String[] args) throws IOException {
         int numPlayers = validateInput();
@@ -38,7 +39,7 @@ public class CardGame {
     public static int validateInput() {
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
-        int numPlayers = 0;
+        numPlayers = 0;
         try {
             numPlayers = Integer.parseInt(inputPlayers.nextLine());
             while (numPlayers < 2) {
@@ -182,5 +183,20 @@ public class CardGame {
             }
             return playGame;
         }
+    }
+
+
+    public static boolean isWinner(Player player){
+        boolean winner = true;
+        int match = player.getHandCard(0).getValue();
+
+        for (Card element : player.getHand()) {
+            if (element.getValue() != match) {
+                // System.out.print(element.getValue());
+                winner = false;
+                break;
+            }
+        }
+        return winner;
     }
 }
