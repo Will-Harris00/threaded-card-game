@@ -8,6 +8,8 @@ public class CardDeck {
 
     public int getOwner() { return number; }
 
+    public ArrayList<Card> getDeck() { return this.deck; }
+
     public void setDeckCard(int index, Card val) { this.deck.set(index, val); }
 
     public Card getDeckCard(int index) { return this.deck.get(index); }

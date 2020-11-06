@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class Player extends Thread {
@@ -25,19 +26,35 @@ public class Player extends Thread {
         play();
     }
 
+    public int random(int len) {
+        if (len == 0) {
+            System.out.println("No more cards in Deck");
+            System.exit(2);
+        }
+        Random rand = new Random(); //instance of random class
+        return rand.nextInt(len);
+    }
+
     public void play() {
         synchronized(this) {
-            boolean winner = true;
-            while (winner) {
+            boolean winner = false;
+            while (!winner) {
+                int index = random(CardGame.deckObj[getOwner()-1].getDeck().size());
                 System.out.println("player " + getOwner() + " draws a " +
-                        ((CardGame.deckObj[getOwner()-1]).getDeckCard(0).getValue()) + " from deck " + (getOwner()));
+                        ((CardGame.deckObj[getOwner()-1]).getDeckCard(index).getValue()) + " from deck " + (getOwner()));
 
+                Card c = CardGame.deckObj[getOwner()-1].getDeckCard(index);
+
+                System.out.println("player: " + getOwner() + " length: " + CardGame.deckObj[getOwner()-1].getDeck().size() + " index: " + index);
+                CardGame.deckObj[getOwner()-1].remFromDeck(index);
+
+                CardGame.playerObj[getOwner()-1].addToHand(c);
                 if (getOwner() != CardGame.numPlayers) {
                     System.out.println("player " + getOwner() + " discards " +
-                            ((CardGame.deckObj[getOwner()]).getDeckCard(0).getValue()) + " to deck " + (getOwner()+1));
+                            (c.getValue()) + " to deck " + (getOwner()+1));
                 } else {
                     System.out.println("player " + CardGame.numPlayers + " discards a " +
-                            ((CardGame.deckObj[0]).getDeckCard(0).getValue()) + " to deck 1");
+                            (c.getValue()) + " to deck 1");
                 }
 
                 System.out.println("player " + getOwner() + " current hand is ");
