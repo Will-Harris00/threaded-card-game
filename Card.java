@@ -2,11 +2,19 @@ public class Card {
     private int value;
     private int holder;
 
-    public void setValue(int val) { this.value = val; }
+    public int getValue() {
+        return this.value;
+    }
 
-    public void setHolder(int owner) { this.holder = owner; }
+    public void setValue(int val) {
+        this.value = val;
+    }
 
-    public int getValue() { return this.value; }
+    public int getHolder() {
+        return this.holder;
+    }
 
-    public int getHolder() { return this.holder; }
+    public void setHolder(int owner) {
+        this.holder = owner;
+    }
 }
