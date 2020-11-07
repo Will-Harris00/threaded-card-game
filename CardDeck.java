@@ -1,15 +1,11 @@
 import java.util.ArrayList;
 
 public class CardDeck {
-    private final int number;
     private ArrayList<Card> deck = new ArrayList<>();
+    private final int number;
 
     public CardDeck(int number) {
         this.number = number;
-    }
-
-    public int getOwner() {
-        return number;
     }
 
     public ArrayList<Card> getDeck() {
@@ -24,16 +20,20 @@ public class CardDeck {
         return this.deck.size();
     }
 
+    public int getOwner() {
+        return number;
+    }
+
     public void setDeckCard(int index, Card val) {
         this.deck.set(index, val);
     }
 
-    public void remFromDeck(int index) {
-        this.deck.remove(index);
-    }
-
     public void addToDeck(Card val) {
         this.deck.add(val);
+    }
+
+    public void remFromDeck(int index) {
+        this.deck.remove(index);
     }
 
 
