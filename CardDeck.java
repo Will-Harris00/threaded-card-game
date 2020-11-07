@@ -4,19 +4,37 @@ public class CardDeck {
     private final int number;
     private ArrayList<Card> deck = new ArrayList<>();
 
-    public CardDeck(int number) { this.number = number; }
+    public CardDeck(int number) {
+        this.number = number;
+    }
 
-    public int getOwner() { return number; }
+    public int getOwner() {
+        return number;
+    }
 
-    public ArrayList<Card> getDeck() { return this.deck; }
+    public ArrayList<Card> getDeck() {
+        return this.deck;
+    }
 
-    public void setDeckCard(int index, Card val) { this.deck.set(index, val); }
+    public Card getDeckCard(int index) {
+        return this.deck.get(index);
+    }
 
-    public Card getDeckCard(int index) { return this.deck.get(index); }
+    public int getDeckSize() {
+        return this.deck.size();
+    }
 
-    public void remFromDeck (int index) { this.deck.remove(index); }
+    public void setDeckCard(int index, Card val) {
+        this.deck.set(index, val);
+    }
 
-    public void addToDeck (Card val) { this.deck.add(val); }
+    public void remFromDeck(int index) {
+        this.deck.remove(index);
+    }
 
-    public int deckSize() { return this.deck.size(); }
+    public void addToDeck(Card val) {
+        this.deck.add(val);
+    }
+
+
 }

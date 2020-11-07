@@ -1,4 +1,7 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +13,7 @@ public class CardGame {
     public static CardDeck[] deckObj;
     static int numPlayers;
 
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         int numPlayers = validateInput();
 
         ArrayList<Integer> packArr = importPack(numPlayers);
@@ -70,7 +73,7 @@ public class CardGame {
         String line;
         ArrayList<Integer> packArr = new ArrayList<>();
         int numLine = 0;
-        while((line = in.readLine()) != null){
+        while ((line = in.readLine()) != null) {
             int value = 0;
             try {
                 value = Integer.parseInt(line);
@@ -109,7 +112,7 @@ public class CardGame {
             while (playerObj[numPlayers - 1].handSize() < 4) {
                 Card c = new Card();
                 c.setValue(packArr.get(i));
-                c.setHolder(j+1);
+                c.setHolder(j + 1);
                 playerObj[j].addToHand(c);
                 System.out.println("\nHand Size: " + playerObj[j].handSize());
                 System.out.println("Player: " + (j + 1));
@@ -123,9 +126,9 @@ public class CardGame {
             }
             Card c = new Card();
             c.setValue(packArr.get(i));
-            c.setHolder(j+1);
+            c.setHolder(j + 1);
             deckObj[j].addToDeck(c);
-            System.out.println("\nDeck Size: " + deckObj[j].deckSize());
+            System.out.println("\nDeck Size: " + deckObj[j].getDeckSize());
             System.out.println("Deck: " + (j + 1));
             if (j < numPlayers - 1) {
                 j++;
@@ -186,7 +189,7 @@ public class CardGame {
     }
 
 
-    public static boolean isWinner(Player player){
+    public static boolean isWinner(Player player) {
         boolean winner = true;
         int match = player.getHandCard(0).getValue();
 
