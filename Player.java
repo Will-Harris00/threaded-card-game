@@ -2,39 +2,39 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Player extends Thread {
-    private final int number;
     private ArrayList<Card> hand = new ArrayList<>();
+    private final int number;
 
     public Player(int number) {
         this.number = number;
-    }
-
-    public int getOwner() {
-        return this.number;
     }
 
     public ArrayList<Card> getHand() {
         return this.hand;
     }
 
-    public void setHandCard(int index, Card val) {
-        this.hand.set(index, val);
-    }
-
     public Card getHandCard(int index) {
         return this.hand.get(index);
     }
 
-    public void remFromHand(int index) {
-        this.hand.remove(index);
+    public int getHandSize() {
+        return this.hand.size();
+    }
+
+    public int getOwner() {
+        return this.number;
+    }
+
+    public void setHandCard(int index, Card val) {
+        this.hand.set(index, val);
     }
 
     public void addToHand(Card val) {
         this.hand.add(val);
     }
 
-    public int handSize() {
-        return this.hand.size();
+    public void remFromHand(int index) {
+        this.hand.remove(index);
     }
 
     public void run() {
