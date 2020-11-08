@@ -1,46 +1,86 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Manages actions of the players in the game.
+ *
+ * @author 014485
+ * @author 054530
+ * @version 1.0
+ */
 public class Player extends Thread {
-    private ArrayList<Card> hand = new ArrayList<>();
     private final int number;
+    private final ArrayList<Card> hand = new ArrayList<>();
 
+    /**
+     * @param number The player ID by which to identify the player.
+     */
     public Player(int number) {
         this.number = number;
     }
 
+    /**
+     * @return The current cards held by the player.
+     */
     public ArrayList<Card> getHand() {
         return this.hand;
     }
 
+    /**
+     * @param index The card in the player's hand to search for and get.
+     * @return The indexed card from the player's hand.
+     */
     public Card getHandCard(int index) {
         return this.hand.get(index);
     }
 
+    /**
+     * @return The number of cards held by the player.
+     */
     public int getHandSize() {
         return this.hand.size();
     }
 
+    /**
+     * @return The player ID.
+     */
     public int getOwner() {
         return this.number;
     }
 
+    /**
+     * @param index The card in the player's hand to search for and set.
+     * @param val   The value to change the indexed card from the player's hand to.
+     */
     public void setHandCard(int index, Card val) {
         this.hand.set(index, val);
     }
 
+    /**
+     * @param val The value to change to the player's hand.
+     */
     public void addToHand(Card val) {
         this.hand.add(val);
     }
 
+    /**
+     * @param index The card in the player's hand to search for and remove.
+     */
     public void remFromHand(int index) {
         this.hand.remove(index);
     }
 
+    /**
+     * Starts the game.
+     */
     public void run() {
         play();
     }
 
+    /**
+     * @param len Number of cards in the deck.
+     * @return Random number from 1 to the length of the list.
+     */
     public int random(int len) {
         if (len == 0) {
             System.out.println("No more cards in Deck");
@@ -50,6 +90,10 @@ public class Player extends Thread {
         return rand.nextInt(len);
     }
 
+    /**
+     * Method which continues to play the game, with each player drawing and discarding cards, until a player has four
+     * cards with the same values, and therefore wins the game.
+     */
     public void play() {
         synchronized (this) {
             boolean winner = false;
