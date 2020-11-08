@@ -7,8 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Executable multi-threaded card game with n players, each with a deck of cards. Every player holds four cards,
+ * with the hands and decks drawn from a pack which contains 8n cards. Each card has a face value of a non-negative
+ * integer.
+ * <p>
+ * Cards are continually drawn and discarded by players sequentially until a player has four cards with the same value
+ * in their hand. This player is declared as the winner.
+ *
+ * @author 014485
+ * @author 054530
+ * @version 1.0
+ */
 public class CardGame {
-    //create array of player hand and card deck objects
+    // Creates array of player hand and card deck objects.
     public static Player[] playerObj;
     public static CardDeck[] deckObj;
     static int numPlayers;
@@ -17,10 +29,10 @@ public class CardGame {
         int numPlayers = validateInput();
 
         ArrayList<Integer> packArr = importPack(numPlayers);
-        // initialise array of player hand and deck objects
+        // Initialises array of player hand and deck objects.
         playerObj = new Player[numPlayers];
         deckObj = new CardDeck[numPlayers];
-        //create & initialize actual player objects using constructor
+        // Creates and initialises player objects using constructor.
         for (int p = 0; p < numPlayers; p++) {
             playerObj[p] = new Player(p + 1);
             deckObj[p] = new CardDeck(p + 1);
@@ -38,7 +50,11 @@ public class CardGame {
         }
     }
 
-
+    /**
+     * Method to set up the game for the user according to the number of players.
+     *
+     * @return The number of players in the game.
+     */
     public static int validateInput() {
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
@@ -58,6 +74,13 @@ public class CardGame {
     }
 
 
+    /**
+     * Method which imports the pack of cards from a given .txt file.
+     *
+     * @param numPlayers The number of players in the game.
+     * @return The array of cards in the pack.
+     * @throws IOException Failures to read the given file.
+     */
     public static ArrayList<Integer> importPack(int numPlayers) throws IOException {
         Scanner inputPack = new Scanner(System.in);
         System.out.print("Please enter location of pack to load: ");
@@ -105,6 +128,14 @@ public class CardGame {
     }
 
 
+    /**
+     * Method which deals cards from the pack to the players' decks.
+     *
+     * @param packArr    The array of cards in the pack.
+     * @param numPlayers The number of players in the game.
+     * @param playerObj  The list of players, each identified by player IDs.
+     * @param deckObj    The list of decks of players, each identified by player IDs.
+     */
     public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj, CardDeck[] deckObj) {
         int j = 0;
         int i = 0;
@@ -141,6 +172,14 @@ public class CardGame {
     }
 
 
+    /**
+     * Method which counts the frequency of each card value in every player's hand to help determine their status in
+     * the game and what strategy they should employ.
+     *
+     * @param packArr    The array of cards in the pack.
+     * @param numPlayers The number of players in the game.
+     * @return Whether the game should continue or not.
+     */
     public static boolean countFrequencies(ArrayList<Integer> packArr, int numPlayers) {
         // hashmap to store the frequency of element
         Map<String, Integer> dict = new HashMap<>();
@@ -189,6 +228,12 @@ public class CardGame {
     }
 
 
+    /**
+     * Method which declares the winner of the game.
+     *
+     * @param player The ID of the player whose hand to check.
+     * @return The name of the winner.
+     */
     public static boolean isWinner(Player player) {
         boolean winner = true;
         int match = player.getHandCard(0).getValue();
