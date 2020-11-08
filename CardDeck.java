@@ -19,7 +19,7 @@ public class CardDeck {
     }
 
     /**
-     * @return Returns the deck as a list of card values.
+     * @return The deck as a list of card values.
      */
     public ArrayList<Card> getDeck() {
         return this.deck;
@@ -27,21 +27,21 @@ public class CardDeck {
 
     /**
      * @param index The card in the deck to search for and get.
-     * @return Returns the indexed card from the deck.
+     * @return The indexed card from the deck.
      */
     public Card getDeckCard(int index) {
         return this.deck.get(index);
     }
 
     /**
-     * @return Returns the size of the deck.
+     * @return The size of the deck.
      */
     public int getDeckSize() {
         return this.deck.size();
     }
 
     /**
-     * @return Returns the player ID who owns the deck.
+     * @return The player ID who owns the deck.
      */
     public int getOwner() {
         return number;
