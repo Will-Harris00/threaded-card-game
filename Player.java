@@ -73,7 +73,7 @@ public class Player extends Thread {
     /**
      * Starts the game.
      */
-    public void run() {
+    public synchronized void run() {
         play();
     }
 
@@ -94,34 +94,100 @@ public class Player extends Thread {
      * Method which continues to play the game, with each player drawing and discarding cards, until a player has four
      * cards with the same values, and therefore wins the game.
      */
-    public void play() {
-        synchronized (this) {
-            boolean winner = false;
-            while (!winner) {
-                int index = random(CardGame.deckObj[getOwner() - 1].getDeck().size());
-                System.out.println("player " + getOwner() + " draws a " +
-                        ((CardGame.deckObj[getOwner() - 1]).getDeckCard(index).getValue()) + " from deck " + (getOwner()));
+    public synchronized Card draw() {
+        int index = random(CardGame.deckObj[getOwner() - 1].getDeck().size());
+        System.out.println("player " + getOwner() + " draws a " +
+                ((CardGame.deckObj[getOwner() - 1]).getDeckCard(index).getValue()) + " from deck " + (getOwner()));
 
-                Card c = CardGame.deckObj[getOwner() - 1].getDeckCard(index);
+        Card c = CardGame.deckObj[getOwner() - 1].getDeckCard(index);
 
-                System.out.println("player: " + getOwner() + " length: " + CardGame.deckObj[getOwner() - 1].getDeck().size() + " index: " + index);
-                CardGame.deckObj[getOwner() - 1].remFromDeck(index);
+        System.out.println("player: " + getOwner() + " length: " + CardGame.deckObj[getOwner() - 1].getDeck().size() + " index: " + index);
+        CardGame.deckObj[getOwner() - 1].remFromDeck(index);
+        return c;
+    }
 
-                CardGame.playerObj[getOwner() - 1].addToHand(c);
-                if (getOwner() != CardGame.numPlayers) {
-                    System.out.println("player " + getOwner() + " discards " +
-                            (c.getValue()) + " to deck " + (getOwner() + 1));
-                } else {
-                    System.out.println("player " + CardGame.numPlayers + " discards a " +
-                            (c.getValue()) + " to deck 1");
+    public synchronized void keep(Card c) {
+        CardGame.playerObj[getOwner() - 1].addToHand(c);
+    }
+
+    public synchronized void strategy(Card c) {
+        boolean doKeep = false;
+        if (c.getValue() == getOwner()) {
+            keep(c);
+            doKeep = true;
+        } else {
+            for (Card j : hand) {
+                if (j.getValue() == c.getValue()) {
+                    keep(c);
+                    doKeep = true;
+                    break;
                 }
-
-                System.out.println("player " + getOwner() + " current hand is ");
-                for (int i = 0; i < CardGame.playerObj[getOwner() - 1].getHand().size(); i++) {
-                    System.out.println("player: " + getOwner() + " Card: " + CardGame.playerObj[getOwner() - 1].getHandCard(i).getValue() + ", ");
-                }
-                winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
             }
+        }
+
+        if (!doKeep) {
+            discard(c);
+        } else {
+            chooseDiscard();
+        }
+    }
+
+    public synchronized void chooseDiscard() {
+        boolean doneDiscard = false;
+        seeHand();
+        System.out.println("Hand Size with Extra Card: " + getHandSize());
+        for (Card j : hand) {
+            int val = j.getValue();
+            if (val == getOwner()) {
+                continue;
+            } else {
+                for (Card k : hand) {
+                    if (j.getValue() == k.getValue() && hand.indexOf(j) != hand.indexOf(k)) {
+                        continue;
+                    } else {
+                        remFromHand(hand.indexOf(k));
+                        discard(k);
+                        doneDiscard = true;
+                        break;
+                    }
+                }
+                if (doneDiscard) {
+                    System.out.println("New Hand Size: " + getHandSize());
+                    break;
+                }
+            }
+        }
+    }
+
+    public void discard(Card n) {
+        if (getOwner() != CardGame.numPlayers) {
+            CardGame.deckObj[getOwner()].addToDeck(n);
+            System.out.println("player " + getOwner() + " discards " +
+                    (n.getValue()) + " to deck " + (getOwner() + 1));
+        } else {
+            CardGame.deckObj[0].addToDeck(n);
+            System.out.println("player " + CardGame.numPlayers + " discards a " +
+                    (n.getValue()) + " to deck 1");
+        }
+    }
+
+    public void seeHand() {
+        System.out.println("player " + getOwner() + " current hand is ");
+        for (int i = 0; i < CardGame.playerObj[getOwner() - 1].getHand().size(); i++) {
+            System.out.println("player: " + getOwner() + " Card: " + CardGame.playerObj[getOwner() - 1].getHandCard(i).getValue() + ", ");
+        }
+    }
+
+    public synchronized void play() {
+        boolean winner = false;
+        while (!winner) {
+
+            Card c = draw();
+
+            strategy(c);
+
+            seeHand();
+            winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
         }
     }
 }

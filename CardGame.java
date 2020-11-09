@@ -140,12 +140,12 @@ public class CardGame {
         int j = 0;
         int i = 0;
         while (i < packArr.size()) {
-            while (playerObj[numPlayers - 1].handSize() < 4) {
+            while (playerObj[numPlayers - 1].getHandSize() < 4) {
                 Card c = new Card();
                 c.setValue(packArr.get(i));
                 c.setHolder(j + 1);
                 playerObj[j].addToHand(c);
-                System.out.println("\nHand Size: " + playerObj[j].handSize());
+                System.out.println("\nHand Size: " + playerObj[j].getHandSize());
                 System.out.println("Player: " + (j + 1));
                 if (j < numPlayers - 1) {
                     j++;

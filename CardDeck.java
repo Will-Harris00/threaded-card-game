@@ -65,9 +65,5 @@ public class CardDeck {
     /**
      * @param index The card in the deck to search for and remove.
      */
-    public void remFromDeck(int index) {
-        this.deck.remove(index);
-    }
-
-
+    public void remFromDeck(int index) { this.deck.remove(index); }
 }
