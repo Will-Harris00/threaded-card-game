@@ -115,6 +115,24 @@ public class Player extends Thread {
         CardGame.playerObj[getOwner() - 1].addToHand(c);
     }
 
+    private static ThreadLocal<HashMap<Integer, Integer>> map = new ThreadLocal<HashMap<Integer, Integer>>() {
+        @Override
+        protected HashMap<Integer, Integer> initialValue() {
+            return new HashMap<>();
+        }
+    };
+
+    private static final Integer USER_ID = 1;
+
+    public static Integer getUserId() {
+
+        return map.get().get(USER_ID);
+    }
+
+    public static void setUserId(Integer userId) {
+
+        map.get().put(USER_ID, userId);
+    }
 
     public synchronized void newStrat(Card c) {
 
@@ -149,7 +167,7 @@ public class Player extends Thread {
                     map.get(c.getValue());
 
                     // Example player 1 picks-up a card with face value two
-                    //5432 keep 2 No.pairs = 4 && map.getValue(c.getValue) == 1
+                    // hand is 5432 keep 2 No.key-value pairs = 4 && map.getValue(c.getValue) == 1
                     if (map.size() == 4 && map.get(c.getValue()) == 1) {
                         for (Card j : hand) {
                             if (j.getValue() != c.getValue()) {
@@ -211,7 +229,6 @@ public class Player extends Thread {
                     } else {
                         System.out.println(map.size());
                         System.out.println("error");
-                        System.out.println("magic");
                         seeHand();
                         System.out.println("magic card: " + c.getValue());
                     }

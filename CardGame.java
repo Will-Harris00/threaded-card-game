@@ -177,14 +177,14 @@ public class CardGame {
         Map<Integer, Integer> dict = new HashMap<>();
 
         for (Integer key : packArr) {
-        Integer j = dict.get(key);
-        dict.put(key, (j == null) ? 1 : j + 1);
+            Integer j = dict.get(key);
+            dict.put(key, (j == null) ? 1 : j + 1);
         }
 
         for (Map.Entry<Integer, Integer> val : dict.entrySet()) {
-        System.out.println("Element " + val.getKey() + " "
-                + "occurs"
-                + ": " + val.getValue() + " times");
+            System.out.println("Element " + val.getKey() + " "
+                    + "occurs"
+                    + ": " + val.getValue() + " times");
         }
         return dict;
     }
