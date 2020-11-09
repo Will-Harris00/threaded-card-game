@@ -110,12 +110,20 @@ public class Player extends Thread {
         CardGame.playerObj[getOwner() - 1].addToHand(c);
     }
 
+    /**
+     * Method which decides whether the player keeps or discards the card they have just drawn. Player keeps the card
+     * if it is equal to their player number, or if they already have a card of equal value in their hand.
+     *
+     * @param c The card drawn by the player.
+     */
     public synchronized void strategy(Card c) {
         boolean doKeep = false;
+        // Checks if value of card drawn is equal to their player number.
         if (c.getValue() == getOwner()) {
             keep(c);
             doKeep = true;
         } else {
+            // Checks if value of card drawn is equal to any card in their hand.
             for (Card j : hand) {
                 if (j.getValue() == c.getValue()) {
                     keep(c);
@@ -124,7 +132,7 @@ public class Player extends Thread {
                 }
             }
         }
-
+        // Discards newly drawn card otherwise.
         if (!doKeep) {
             discard(c);
         } else {
@@ -158,6 +166,7 @@ public class Player extends Thread {
             }
         }
     }
+
 
     public void discard(Card n) {
         if (getOwner() != CardGame.numPlayers) {
