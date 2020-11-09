@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Manages actions of the players in the game.
@@ -12,6 +11,7 @@ public class Player extends Thread {
     private final int number;
     private final ArrayList<Card> hand = new ArrayList<>();
 
+
     /**
      * @param number The player ID by which to identify the player.
      */
@@ -19,12 +19,14 @@ public class Player extends Thread {
         this.number = number;
     }
 
+
     /**
      * @return The current cards held by the player.
      */
     public ArrayList<Card> getHand() {
         return this.hand;
     }
+
 
     /**
      * @param index The card in the player's hand to search for and get.
@@ -34,6 +36,7 @@ public class Player extends Thread {
         return this.hand.get(index);
     }
 
+
     /**
      * @return The number of cards held by the player.
      */
@@ -41,12 +44,14 @@ public class Player extends Thread {
         return this.hand.size();
     }
 
+
     /**
      * @return The player ID.
      */
     public int getOwner() {
         return this.number;
     }
+
 
     /**
      * @param index The card in the player's hand to search for and set.
@@ -56,12 +61,14 @@ public class Player extends Thread {
         this.hand.set(index, val);
     }
 
+
     /**
      * @param val The value to change to the player's hand.
      */
     public void addToHand(Card val) {
         this.hand.add(val);
     }
+
 
     /**
      * @param index The card in the player's hand to search for and remove.
@@ -70,31 +77,28 @@ public class Player extends Thread {
         this.hand.remove(index);
     }
 
+
     /**
      * Starts the game.
      */
-    public synchronized void run() {
-        play();
-    }
+    public void run() { play(); }
+
 
     /**
      * @param len Number of cards in the deck.
      * @return Random number from 1 to the length of the list.
      */
     public int random(int len) {
-        if (len == 0) {
-            System.out.println("No more cards in Deck");
-            System.exit(2);
-        }
         Random rand = new Random(); //instance of random class
         return rand.nextInt(len);
     }
+
 
     /**
      * Method which continues to play the game, with each player drawing and discarding cards, until a player has four
      * cards with the same values, and therefore wins the game.
      */
-    public synchronized Card draw() {
+    public Card draw() {
         int index = random(CardGame.deckObj[getOwner() - 1].getDeck().size());
         System.out.println("player " + getOwner() + " draws a " +
                 ((CardGame.deckObj[getOwner() - 1]).getDeckCard(index).getValue()) + " from deck " + (getOwner()));
@@ -106,58 +110,120 @@ public class Player extends Thread {
         return c;
     }
 
-    public synchronized void keep(Card c) {
+
+    public void keep(Card c) {
         CardGame.playerObj[getOwner() - 1].addToHand(c);
     }
 
-    public synchronized void strategy(Card c) {
-        boolean doKeep = false;
+
+    public synchronized void newStrat(Card c) {
+
+        ArrayList<Integer> pick = new ArrayList<>();
+
+        for (Card i : hand) {
+            pick.add(i.getValue());
+        }
+
+        Map<Integer, Integer> map = CardGame.genHashMap(pick);
+        // if picked-up card is preferred, keep card and discard non-preferred
         if (c.getValue() == getOwner()) {
+            System.out.println("Owner: " + getOwner() + ", Preferred: " + c.getValue());
             keep(c);
-            doKeep = true;
-        } else {
             for (Card j : hand) {
-                if (j.getValue() == c.getValue()) {
-                    keep(c);
-                    doKeep = true;
+                if (j.getValue() != getOwner()) {
+                    discard(j);
                     break;
                 }
             }
         }
 
-        if (!doKeep) {
-            discard(c);
-        } else {
-            chooseDiscard();
-        }
-    }
+        // if card is not preferred check if hand already contains preferred card
+        else {
+            System.out.println("Owner: " + getOwner() + ", Card Value: " + c.getValue());
+            try {
+                // if hand contains preferred card, discard pick-up
+                map.get(getOwner());
+            } catch (NullPointerException e) {
+                try {
+                    // checks if hand contains picked-up card
+                    map.get(c.getValue());
 
-    public synchronized void chooseDiscard() {
-        boolean doneDiscard = false;
-        seeHand();
-        System.out.println("Hand Size with Extra Card: " + getHandSize());
-        for (Card j : hand) {
-            int val = j.getValue();
-            if (val == getOwner()) {
-                continue;
-            } else {
-                for (Card k : hand) {
-                    if (j.getValue() == k.getValue() && hand.indexOf(j) != hand.indexOf(k)) {
-                        continue;
-                    } else {
-                        remFromHand(hand.indexOf(k));
-                        discard(k);
-                        doneDiscard = true;
-                        break;
+                    // Example player 1 picks-up a card with face value two
+                    //5432 keep 2 No.pairs = 4 && map.getValue(c.getValue) == 1
+                    if (map.size() == 4 && map.get(c.getValue()) == 1) {
+                        for (Card j : hand) {
+                            if (j.getValue() != c.getValue()) {
+                                discard(j);
+                                break;
+                            }
+                        }
+                        keep(c);
+                        System.out.println("Path A" + hand.size());
                     }
-                }
-                if (doneDiscard) {
-                    System.out.println("New Hand Size: " + getHandSize());
-                    break;
+                    // hand is 4432 keep the picked-up 2. No.key-value pairs = 3 && map.getValue(c.getValue) == 1
+                    else if (map.size() == 3 && map.get(c.getValue()) == 1) {
+                        for (Card j : hand) {
+                            if (j.getValue() != c.getValue() && map.get(j.getValue()) == 1) {
+                                discard(j);
+                                break;
+                            }
+                        }
+                        keep(c);
+                        System.out.println("Path B" + hand.size());
+                    }
+                    // hand is 4322 keep the picked-up 2. No.key-value pairs = 3 && map.getValue(c.getValue) == 2
+                    else if (map.size() == 3 && map.get(c.getValue()) == 2) {
+                        for (Card j : hand) {
+                            if (j.getValue() != c.getValue() && map.get(j.getValue()) == 1) {
+                                discard(j);
+                                break;
+                            }
+                        }
+                        keep(c);
+                        System.out.println("Path C" + hand.size());
+                    }
+                    // hand is 3332 discard the picked-up 2. No.key-value pairs = 2 && map.getValue(c.getValue) == 1
+                    else if (map.size() == 2 && map.get(c.getValue()) == 1) {
+                        discard(c);
+                        System.out.println("Path D" + hand.size());
+                    }
+                    // hand is 3322 keep the picked-up 2. No.key-value pairs && map.getValue(c.getValue) == 2
+                    else if (map.size() == 2 && map.get(c.getValue()) == 2) {
+                        for (Card j : hand) {
+                            if (j.getValue() != c.getValue() && map.get(j.getValue()) == 2) {
+                                discard(j);
+                                break;
+                            }
+                        }
+                        keep(c);
+                        System.out.println("Path E" + hand.size());
+                    }
+                    // hand is 2223 keep the picked-up 2. No.key-value pairs && map.getValue(c.getValue) == 3
+                    else if (map.size() == 2 && map.get(c.getValue()) == 3) {
+                        for (Card j : hand) {
+                            if (j.getValue() != c.getValue() && map.get(j.getValue()) == 1) {
+                                discard(j);
+                                break;
+                            }
+                        }
+                        keep(c);
+                        System.out.println("Path F" + hand.size());
+                    } else {
+                        System.out.println(map.size());
+                        System.out.println("error");
+                        System.out.println("magic");
+                        seeHand();
+                        System.out.println("magic card: " + c.getValue());
+                    }
+
+                } catch (NullPointerException f) {
+                    // When the card picked-up is not in the hand discard immediately
+                    discard(c);
                 }
             }
         }
     }
+
 
     public void discard(Card n) {
         if (getOwner() != CardGame.numPlayers) {
@@ -171,6 +237,7 @@ public class Player extends Thread {
         }
     }
 
+
     public void seeHand() {
         System.out.println("player " + getOwner() + " current hand is ");
         for (int i = 0; i < CardGame.playerObj[getOwner() - 1].getHand().size(); i++) {
@@ -178,16 +245,26 @@ public class Player extends Thread {
         }
     }
 
-    public synchronized void play() {
+
+    public void play() {
         boolean winner = false;
-        while (!winner) {
+        // while (!winner) {
+        for (int i = 0; i < 15; i++) {
+            if (CardGame.deckObj[getOwner() - 1].getDeck().size() != 0) {
+                Card c = draw();
 
-            Card c = draw();
+                newStrat(c);
 
-            strategy(c);
+                seeHand();
 
-            seeHand();
+                System.out.println("Deck Not Zero");
+            }
+            else {
+                System.out.println("Deck is Empty");
+            }
             winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
         }
+        System.out.println("fin");
+        seeHand();
     }
 }
