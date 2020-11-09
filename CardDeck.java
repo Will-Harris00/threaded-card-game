@@ -11,6 +11,7 @@ public class CardDeck {
     private final int number;
     private final ArrayList<Card> deck = new ArrayList<>();
 
+
     /**
      * @param number Identifies card decks according to player ID.
      */
@@ -18,12 +19,14 @@ public class CardDeck {
         this.number = number;
     }
 
+
     /**
      * @return The deck as a list of card values.
      */
     public ArrayList<Card> getDeck() {
         return this.deck;
     }
+
 
     /**
      * @param index The card in the deck to search for and get.
@@ -33,6 +36,7 @@ public class CardDeck {
         return this.deck.get(index);
     }
 
+
     /**
      * @return The size of the deck.
      */
@@ -40,12 +44,14 @@ public class CardDeck {
         return this.deck.size();
     }
 
+
     /**
      * @return The player ID who owns the deck.
      */
     public int getOwner() {
         return number;
     }
+
 
     /**
      * @param index The card in the deck to search for and set value to.
@@ -55,12 +61,14 @@ public class CardDeck {
         this.deck.set(index, val);
     }
 
+
     /**
      * @param val The value of the card to add to the deck.
      */
     public void addToDeck(Card val) {
         this.deck.add(val);
     }
+
 
     /**
      * @param index The card in the deck to search for and remove.

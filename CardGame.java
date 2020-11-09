@@ -25,6 +25,7 @@ public class CardGame {
     public static CardDeck[] deckObj;
     static int numPlayers;
 
+
     public static void main(String[] args) throws IOException {
         int numPlayers = validateInput();
 
@@ -40,8 +41,6 @@ public class CardGame {
 
         System.out.println("\nCard Pack: " + packArr.toString());
         dealCards(packArr, numPlayers, playerObj, deckObj);
-        System.out.println(deckObj[3].getDeckCard(3).getValue());
-        System.out.println(deckObj[3].getDeckCard(3).getHolder());
 
         for (Player player : playerObj) {
             player.start();
@@ -49,6 +48,7 @@ public class CardGame {
             System.out.println(player.getName());
         }
     }
+
 
     /**
      * Method to set up the game for the user according to the number of players.
@@ -172,6 +172,24 @@ public class CardGame {
     }
 
 
+    public static Map<Integer, Integer> genHashMap(ArrayList<Integer> packArr) {
+        // hashmap to store the frequency of element
+        Map<Integer, Integer> dict = new HashMap<>();
+
+        for (Integer key : packArr) {
+        Integer j = dict.get(key);
+        dict.put(key, (j == null) ? 1 : j + 1);
+        }
+
+        for (Map.Entry<Integer, Integer> val : dict.entrySet()) {
+        System.out.println("Element " + val.getKey() + " "
+                + "occurs"
+                + ": " + val.getValue() + " times");
+        }
+        return dict;
+    }
+
+
     /**
      * Method which counts the frequency of each card value in every player's hand to help determine their status in
      * the game and what strategy they should employ.
@@ -182,26 +200,13 @@ public class CardGame {
      */
     public static boolean countFrequencies(ArrayList<Integer> packArr, int numPlayers) {
         // hashmap to store the frequency of element
-        Map<String, Integer> dict = new HashMap<>();
-
-        for (Integer i : packArr) {
-            String key = i.toString();
-            Integer j = dict.get(key);
-            dict.put(key, (j == null) ? 1 : j + 1);
-        }
-
-        for (Map.Entry<String, Integer> val : dict.entrySet()) {
-            System.out.println("Element " + val.getKey() + " "
-                    + "occurs"
-                    + ": " + val.getValue() + " times");
-        }
+        Map<Integer, Integer> dict = genHashMap(packArr);
 
         boolean playGame = false;
 
         for (int p = 1; p < numPlayers + 1; p++) {
-            String key = Integer.toString(p);
             try {
-                if (dict.get(key) >= 4) {
+                if (dict.get(p) >= 4) {
                     System.out.println("\nPlayer " + p + " could collect a winning hand.");
                     playGame = true;
                 } else {
@@ -217,7 +222,7 @@ public class CardGame {
             return true;
         } else {
             // displaying the occurrence of elements in the arraylist
-            for (Map.Entry<String, Integer> val : dict.entrySet()) {
+            for (Map.Entry<Integer, Integer> val : dict.entrySet()) {
                 if (val.getValue() >= 4) {
                     System.out.println("\nThere is the possibility of a winning hand but the game may stagnate.");
                     playGame = true;

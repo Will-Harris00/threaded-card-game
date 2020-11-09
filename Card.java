@@ -10,12 +10,14 @@ public class Card {
     private int holder;
     private int value;
 
+
     /**
      * @return The player ID who owns the card.
      */
     public int getHolder() {
         return this.holder;
     }
+
 
     /**
      * @param owner The owner of the card to this player ID.
@@ -24,12 +26,14 @@ public class Card {
         this.holder = owner;
     }
 
+
     /**
      * @return The value of the card.
      */
     public int getValue() {
         return this.value;
     }
+
 
     /**
      * @param val The value of this card to this integer.
