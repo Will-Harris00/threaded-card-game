@@ -145,13 +145,19 @@ public class Player extends Thread {
         if (c.getValue() == getOwner()) {
             writeToFile("Owner: " + getOwner() + ", Preferred: " + c.getValue());
             writeToFile(System.lineSeparator());
-            keep(c);
             for (Card j : hand) {
                 if (j.getValue() != getOwner()) {
                     remove(j);
                     discard(j);
+                    doneDiscard = true;
                     break;
                 }
+            }
+            if (!doneDiscard) {
+                remove(c);
+                discard(c);
+            } else {
+                keep(c);
             }
         }
         // if picked-up card is another players preferred card then discard
@@ -365,8 +371,9 @@ public class Player extends Thread {
         synchronized (this) {
             boolean winner = false;
             createFile();
-            // while (!winner) {
-            for (int i = 0; i < 22; i++) {
+            while (!winner) {
+            // for (int i = 0; i < 100; i++) {
+                winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
                 if (CardGame.deckObj[getOwner() - 1].getDeck().size() != 0) {
                     Card c = draw();
 
@@ -377,9 +384,9 @@ public class Player extends Thread {
                 } else {
                     System.out.println("Deck is Empty");
                 }
-                winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
             }
-            System.out.println("fin");
+            writeToFile(Boolean.toString(CardGame.isWinner(CardGame.playerObj[getOwner() - 1])));
+            writeToFile(System.lineSeparator());
             seeHand();
         }
     }
