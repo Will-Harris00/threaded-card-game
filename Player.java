@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -81,7 +84,13 @@ public class Player extends Thread {
     /**
      * Starts the game.
      */
-    public void run() { play(); }
+    public void run() {
+        try {
+            play();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -91,23 +100,6 @@ public class Player extends Thread {
     public int random(int len) {
         Random rand = new Random(); //instance of random class
         return rand.nextInt(len);
-    }
-
-
-    /**
-     * Method which continues to play the game, with each player drawing and discarding cards, until a player has four
-     * cards with the same values, and therefore wins the game.
-     */
-    public Card draw() {
-        int index = random(CardGame.deckObj[getOwner() - 1].getDeck().size());
-        System.out.println("player " + getOwner() + " draws a " +
-                ((CardGame.deckObj[getOwner() - 1]).getDeckCard(index).getValue()) + " from deck " + (getOwner()));
-
-        Card c = CardGame.deckObj[getOwner() - 1].getDeckCard(index);
-
-        System.out.println("player: " + getOwner() + " length: " + CardGame.deckObj[getOwner() - 1].getDeck().size() + " index: " + index);
-        CardGame.deckObj[getOwner() - 1].remFromDeck(index);
-        return c;
     }
 
 
@@ -135,26 +127,78 @@ public class Player extends Thread {
     }
 
     public synchronized void newStrat(Card c) {
+        boolean doneDiscard = false;
 
+         /*
         ArrayList<Integer> pick = new ArrayList<>();
 
         for (Card i : hand) {
             pick.add(i.getValue());
         }
 
-        Map<Integer, Integer> map = CardGame.genHashMap(pick);
+        // Map<Integer, Integer> map = CardGame.genHashMap(pick);
+        Map<Integer, Integer> map = new HashMap<>();
+        map = CardGame.genHashMap(pick);
+         */
+
         // if picked-up card is preferred, keep card and discard non-preferred
         if (c.getValue() == getOwner()) {
-            System.out.println("Owner: " + getOwner() + ", Preferred: " + c.getValue());
+            writeToFile("Owner: " + getOwner() + ", Preferred: " + c.getValue());
+            writeToFile(System.lineSeparator());
             keep(c);
             for (Card j : hand) {
                 if (j.getValue() != getOwner()) {
+                    remove(j);
                     discard(j);
                     break;
                 }
             }
         }
-
+        // if picked-up card is another players preferred card then discard
+        else if (c.getValue() <= CardGame.numPlayers) {
+            discard(c);
+        }
+        // if picked-up card is no players preferred card
+        else {
+            writeToFile("Owner: " + getOwner() + ", Card Value: " + c.getValue());
+            writeToFile(System.lineSeparator());
+            // if hand does not contain preferred cards check hand for other players preferred and discard.
+            for (Card j : hand) {
+                if (j.getValue() <= CardGame.numPlayers && j.getValue() != getOwner()) {
+                    discard(j);
+                    remove(j);
+                    doneDiscard = true;
+                    break;
+                }
+            }
+            if (doneDiscard) {
+                keep(c);
+            }
+            // if hand contains no players preferred cards check for matching cards
+            else {
+                for (Card j : hand) {
+                    if (j.getValue() == c.getValue()) {
+                        for (Card k : hand) {
+                            if (k.getValue() != getOwner() && k.getValue() != c.getValue()) {
+                                remove(j);
+                                discard(k);
+                                doneDiscard = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (doneDiscard) {
+                        keep(c);
+                    }
+                    // if hand contains no players preferred cards and no matching cards discard pick-up
+                    else {
+                        discard(c);
+                    }
+                    break;
+                }
+            }
+        }
+        /*
         // if card is not preferred check if hand already contains preferred card
         else {
             System.out.println("Owner: " + getOwner() + ", Card Value: " + c.getValue());
@@ -239,49 +283,104 @@ public class Player extends Thread {
                 }
             }
         }
+         */
+    }
+
+
+    /**
+     * Method which continues to play the game, with each player drawing and discarding cards, until a player has four
+     * cards with the same values, and therefore wins the game.
+     */
+    public Card draw() {
+        StringBuilder writeString = new StringBuilder();
+        int index = random(CardGame.deckObj[getOwner() - 1].getDeck().size());
+        writeString.append("player ").append(getOwner()).append(" draws a ").append((CardGame.deckObj[getOwner() - 1])
+                .getDeckCard(index).getValue()).append(" from deck ").append(getOwner());
+
+        Card c = CardGame.deckObj[getOwner() - 1].getDeckCard(index);
+
+        CardGame.deckObj[getOwner() - 1].remFromDeck(index);
+
+        System.out.println(writeString.toString().trim());
+        writeToFile(writeString.toString().trim());
+        writeToFile(System.lineSeparator());
+        return c;
     }
 
 
     public void discard(Card n) {
+        StringBuilder writeString = new StringBuilder();
         if (getOwner() != CardGame.numPlayers) {
             CardGame.deckObj[getOwner()].addToDeck(n);
-            System.out.println("player " + getOwner() + " discards " +
-                    (n.getValue()) + " to deck " + (getOwner() + 1));
+            writeString.append("player ").append(getOwner()).append(" discards ")
+                    .append(n.getValue()).append(" to deck ").append(getOwner() + 1);
         } else {
             CardGame.deckObj[0].addToDeck(n);
-            System.out.println("player " + CardGame.numPlayers + " discards a " +
-                    (n.getValue()) + " to deck 1");
+            writeString.append("player ").append(CardGame.numPlayers)
+                    .append(" discards a ").append(n.getValue()).append(" to deck 1");
         }
+        System.out.println(writeString.toString().trim());
+        writeToFile(writeString.toString().trim());
+        writeToFile(System.lineSeparator());
+    }
+
+    public void remove(Card n) {
+        CardGame.playerObj[getOwner()-1].remFromHand(hand.indexOf(n));
     }
 
 
     public void seeHand() {
-        System.out.println("player " + getOwner() + " current hand is ");
+        StringBuilder writeString = new StringBuilder();
+        writeString.append("player ").append(getOwner()).append(" current hand is ");
         for (int i = 0; i < CardGame.playerObj[getOwner() - 1].getHand().size(); i++) {
-            System.out.println("player: " + getOwner() + " Card: " + CardGame.playerObj[getOwner() - 1].getHandCard(i).getValue() + ", ");
+            writeString.append(CardGame.playerObj[getOwner() - 1].getHandCard(i).getValue()).append(" ");
         }
+        System.out.println(writeString.toString().trim());
+        writeToFile(writeString.toString().trim());
+        writeToFile(System.lineSeparator());
     }
 
 
-    public void play() {
-        boolean winner = false;
-        // while (!winner) {
-        for (int i = 0; i < 15; i++) {
-            if (CardGame.deckObj[getOwner() - 1].getDeck().size() != 0) {
-                Card c = draw();
-
-                newStrat(c);
-
-                seeHand();
-
-                System.out.println("Deck Not Zero");
-            }
-            else {
-                System.out.println("Deck is Empty");
-            }
-            winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
+    public void writeToFile(String writeString) {
+        try {
+            FileWriter myWriter = new FileWriter("player"+getOwner()+"_output.txt", true);
+            myWriter.write(writeString);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
-        System.out.println("fin");
-        seeHand();
+    }
+
+    public void createFile() {
+        try {
+            new FileWriter("player" + getOwner() + "_output.txt", false);
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public void play() throws IOException {
+        synchronized (this) {
+            boolean winner = false;
+            createFile();
+            // while (!winner) {
+            for (int i = 0; i < 22; i++) {
+                if (CardGame.deckObj[getOwner() - 1].getDeck().size() != 0) {
+                    Card c = draw();
+
+                    seeHand();
+                    newStrat(c);
+
+                    System.out.println("Deck Not Zero");
+                } else {
+                    System.out.println("Deck is Empty");
+                }
+                winner = CardGame.isWinner(CardGame.playerObj[getOwner() - 1]);
+            }
+            System.out.println("fin");
+            seeHand();
+        }
     }
 }
