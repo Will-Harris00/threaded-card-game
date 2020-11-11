@@ -2,92 +2,102 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-    private Player env;
+    private Player pl;
 
     @Before
     public void setUp() {
-        env = new Player(1);
+        pl = new Player(1);
         // set up a target test hand
         Card n = new Card();
         n.setValue(5);
-        for (int i = 0; i < 3; i ++) {
-            env.getHand().add(n);
+        for (int i = 0; i < 4; i ++) {
+            pl.getHand().add(n);
         }
     }
 
     @After
     public void tearDown () {
-        env = null;
+        pl = null;
     }
 
     @Test
     public void testGetHandCard() {
-        int expected = env.getHand().get(0).getValue();
+        int expected = pl.getHand().get(0).getValue();
         // run the Checker
-        assertEquals(expected, env.getHandCard(0).getValue());
+        assertEquals(expected, pl.getHandCard(0).getValue());
     }
 
     @Test
-    public void getHand() {
+    public void testGetHand() {
     }
 
     @Test
-    public void getHandSize() {
+    public void testGetHandSize() {
+        int expected = pl.getHand().size();
+        assertEquals(expected, pl.getHandSize());
     }
 
     @Test
-    public void getPlayer() {
+    public void testGetPlayer() {
     }
 
     @Test
-    public void addToHand() {
+    public void testAddToHand() {
+        Card n = new Card();
+        n.setValue(7);
+        pl.getHand().add(n);
+        int expectedVal = pl.getHand().get(4).getValue();
+        assertEquals(5, pl.getHandSize());
+        assertEquals(expectedVal, n.getValue());
     }
 
     @Test
-    public void remFromHand() {
+    public void testRemFromHand() {
     }
 
     @Test
-    public void drawValue() {
+    public void testDrawValue() {
     }
 
     @Test
-    public void draw() {
+    public void testDraw() {
     }
 
     @Test
-    public void discard() {
+    public void testDiscard() {
     }
 
     @Test
-    public void keep() {
+    public void testKeep() {
     }
 
     @Test
-    public void remove() {
+    public void testRemove() {
     }
 
     @Test
-    public void viewArray() {
+    public void testViewArray() {
     }
 
     @Test
-    public void strategy() {
+    public void testStrategy() {
     }
 
     @Test
-    public void writeToFile() {
+    public void testWriteToFile() {
     }
 
     @Test
-    public void createFile() {
+    public void testCreateFile() {
     }
 
     @Test
-    public void run() {
+    public void testRun() {
     }
 
     @Test
