@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Manages actions of the players in the game.
@@ -85,10 +86,6 @@ public class Player extends Thread {
     }
 
 
-    // Starts the game.
-    public void run() { play(); }
-
-
     /**
      * Method which keeps the card drawn by the player and adds it to their hand.
      *
@@ -120,7 +117,7 @@ public class Player extends Thread {
                 }
             }
             if (!doneDiscard) {
-                remove(c);
+                // remove(c);
                 discard(c);
             } else {
                 keep(c);
@@ -181,13 +178,14 @@ public class Player extends Thread {
      */
     public Card draw() {
         // player picks a card from the top of the deck to their left
+        StringBuilder writeString = new StringBuilder();
+        writeString.append("player " + getPlayer() + " draws a " +
+                drawValue() + " from deck " + getPlayer());
+
         Card c = CardGame.deckObj[getPlayer() - 1].getDeckCard(0);
 
         CardGame.deckObj[getPlayer() - 1].remFromDeck(0);
 
-        StringBuilder writeString = new StringBuilder();
-        writeString.append("player " + getPlayer() + " draws a " +
-                drawValue() + " from deck " + getPlayer());
         System.out.println(writeString.toString().trim());
         writeToFile(writeString.toString().trim());
         writeToFile(System.lineSeparator());
@@ -271,28 +269,44 @@ public class Player extends Thread {
 
 
     // Method for each player to play the game until a winner is established.
-    public void play() {
-        synchronized (this) {
-            CardGame.winner = isWinner();
-            createFile();
-            while (!CardGame.winner) {
-                CardGame.winner = isWinner();
-                System.out.println(CardGame.winner);
+    public void run() {
+        // synchronized (this) {
+        isWinner();
+        createFile();
+        while (!CardGame.complete) {
+            isWinner();
+
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(Thread.currentThread().getName() + CardGame.complete);
+            synchronized (this) {
                 if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
+                    seeHand();
                     Card c = draw();
 
-                    seeHand();
                     strategy(c);
 
-                    System.out.println("Deck Not Zero");
+                    System.out.println(getPlayer() + " Deck Not Zero");
                 } else {
-                    System.out.println("Empty Deck");
+                    System.out.println(getPlayer() + " Empty Deck");
                 }
             }
-            writeToFile(Boolean.toString(isWinner()));
-            writeToFile(System.lineSeparator());
-            seeHand();
         }
+            /*
+            for (Player player : CardGame.playerObj) {
+                if (player.getPlayer() != this.pNumber) {
+                    player.interrupt();
+                }
+            }
+             */
+        // writeToFile(Boolean.toString(isWinner()));
+        writeToFile(System.lineSeparator());
+        seeHand();
+        //}
     }
 
 
@@ -301,14 +315,29 @@ public class Player extends Thread {
      *
      * @return The name of the winner.
      */
-    public boolean isWinner() {
+    public void isWinner() {
         int match = this.hand.get(0).getValue();
 
         for (Card element : this.hand) {
             if (element.getValue() != match) {
-                return false;
+                return;
             }
         }
-        return true;
+        /*
+        synchronized (this) {
+            CardGame.complete.compareAndSet(false, true);
+            if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
+                System.out.println("player " + pNumber + " wins");
+                CardGame.winner.compareAndSet(0, pNumber);
+                CardGame.complete.set(true);
+            }
+        }
+         */
+        synchronized (this) {
+            if (CardGame.winner == 0) {
+                System.out.println("player " + pNumber + " wins");
+                CardGame.winner = pNumber;
+            }
+        }
     }
 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Executable multi-threaded card game with n players, each with a deck of cards. Every player holds four cards,
@@ -23,11 +25,13 @@ public class CardGame {
     // Creates array of player hand and card deck objects.
     public static Player[] playerObj;
     public static CardDeck[] deckObj;
+    // public static AtomicBoolean complete;
+    // public static AtomicInteger winner;
+    public static boolean complete;
+    public static int winner = 0;
     static int numPlayers;
-    static boolean winner = true;
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
         int numPlayers = validateInput(inputPlayers);
@@ -44,6 +48,8 @@ public class CardGame {
 
         System.out.println("\nCard Pack: " + packArr.toString());
         dealCards(packArr, numPlayers, playerObj, deckObj);
+        //complete = new AtomicBoolean(false);
+        //winner = new AtomicInteger(0);
 
         for (Player player : playerObj) {
             player.start();
