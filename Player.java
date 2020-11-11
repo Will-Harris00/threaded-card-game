@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Manages actions of the players in the game.
@@ -68,48 +69,6 @@ public class Player extends Thread {
     }
 
     /**
-     * Method which keeps the card drawn by the player and adds it to their hand.
-     *
-     * @param c The card drawn by the player.
-     */
-    public void keep(Card c) {
-        CardGame.playerObj[getPlayer() - 1].addToHand(c);
-    }
-
-    /**
-     * Method which discards a card from the player's hand to a deck.
-     *
-     * @param n The card to discard from the player's hand.
-     */
-    public synchronized void discard(Card n) {
-        StringBuilder writeString = new StringBuilder();
-        // Player discards card to the bottom of the deck to their right.
-        if (getPlayer() != CardGame.numPlayers) {
-            CardGame.deckObj[getPlayer()].addToDeck(n);
-            writeString.append("player ").append(getPlayer()).append(" discards ").append(n.getValue())
-                    .append(" to deck ").append(getPlayer() + 1);
-        } else {
-            // Edge case when last player discards card back to the first player's deck.
-            CardGame.deckObj[0].addToDeck(n);
-            writeString.append("player ").append(CardGame.numPlayers).append(" discards a ").append(n.getValue())
-                    .append(" to deck 1");
-        }
-
-        System.out.println(writeString.toString().trim());
-        writeToFile("player", writeString.toString().trim());
-        writeToFile("player", System.lineSeparator());
-    }
-
-    /**
-     * Method which removes the card from the player's hand.
-     *
-     * @param n The card to remove from the player's hand.
-     */
-    public synchronized void remove(Card n) {
-        CardGame.playerObj[getPlayer() - 1].remFromHand(hand.indexOf(n));
-    }
-
-    /**
      * Method which draws a card from the player's deck.
      *
      * @return The card from the player's deck.
@@ -129,6 +88,49 @@ public class Player extends Thread {
         writeToFile("player", System.lineSeparator());
 
         return c;
+    }
+
+    /**
+     * Method which discards a card from the player's hand to a deck.
+     *
+     * @param n The card to discard from the player's hand.
+     */
+    public synchronized void discard(Card n) {
+        remove(n);
+        StringBuilder writeString = new StringBuilder();
+        // Player discards card to the bottom of the deck to their right.
+        if (getPlayer() != CardGame.numPlayers) {
+            CardGame.deckObj[getPlayer()].addToDeck(n);
+            writeString.append("player ").append(getPlayer()).append(" discards ").append(n.getValue())
+                    .append(" to deck ").append(getPlayer() + 1);
+        } else {
+            // Edge case when last player discards card back to the first player's deck.
+            CardGame.deckObj[0].addToDeck(n);
+            writeString.append("player ").append(CardGame.numPlayers).append(" discards a ").append(n.getValue())
+                    .append(" to deck 1");
+        }
+
+        System.out.println(writeString.toString().trim());
+        writeToFile("player", writeString.toString().trim());
+        writeToFile("player", System.lineSeparator());
+    }
+
+    /**
+     * Method which keeps the card drawn by the player and adds it to their hand.
+     *
+     * @param c The card drawn by the player.
+     */
+    public void keep(Card c) {
+        CardGame.playerObj[getPlayer() - 1].addToHand(c);
+    }
+
+    /**
+     * Method which removes the card from the player's hand.
+     *
+     * @param n The card to remove from the player's hand.
+     */
+    public synchronized void remove(Card n) {
+        CardGame.playerObj[getPlayer() - 1].remFromHand(hand.indexOf(n));
     }
 
     // Displays the cards in the hand/deck of a player.
@@ -161,7 +163,20 @@ public class Player extends Thread {
      */
     public synchronized void strategy(Card c) {
         boolean doneDiscard = false;
+        Random rand = new Random();
+        synchronized (this) {
+            keep(c);
 
+            while (!doneDiscard) {
+                int index = rand.nextInt(4);
+                if (hand.get(index).getValue() != pNumber) {
+                    discard(hand.get(index));
+                    doneDiscard = true;
+                }
+            }
+        }
+
+        /*
         // If drawn card is preferred, keep card and discard the first non-preferred card in hand.
         if (c.getValue() == getPlayer()) {
             System.out.println(("Player: " + getPlayer() + ", Preferred: " + c.getValue()));
@@ -223,6 +238,7 @@ public class Player extends Thread {
                 }
             }
         }
+        */
     }
 
 
@@ -268,13 +284,6 @@ public class Player extends Thread {
             }
              */
 
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                // e.printStackTrace();
-                // Thread.currentThread().interrupt();
-            }
-
             System.out.println(Thread.currentThread().getName() + CardGame.complete);
             synchronized (this) {
                 if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
@@ -285,11 +294,6 @@ public class Player extends Thread {
                     if (!CardGame.complete.get()) {
                         viewArray(" current hand is ", true);
                         writeToFile("player", System.lineSeparator());
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                     isWinner();
                     System.out.println(getPlayer() + " Deck Not Zero");
@@ -306,14 +310,10 @@ public class Player extends Thread {
             }
              */
         // Thread.currentThread().interrupt();
-
         // Writes the final output texts for each player output file.
         StringBuilder writeString = new StringBuilder();
         // Outputs for players who didn't win.
         if (CardGame.winner.get() != pNumber) {
-            if (CardGame.winner.get() == 0) {
-                CardGame.winner.get();
-            }
             writeString.append("player ").append(CardGame.winner.get()).append(" has informed player ")
                     .append(pNumber).append(" that player ").append(CardGame.winner.get()).append(" has won");
             writeString.append(System.lineSeparator());
@@ -347,13 +347,11 @@ public class Player extends Thread {
                 return;
             }
         }
-        synchronized (this) {
-            CardGame.complete.compareAndSet(false, true);
-            if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
-                System.out.println("player " + pNumber + " wins");
-                CardGame.winner.compareAndSet(0, pNumber);
-                CardGame.complete.set(true);
-            }
+        CardGame.complete.compareAndSet(false, true);
+        if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
+            System.out.println("player " + pNumber + " wins");
+            CardGame.winner.compareAndSet(0, pNumber);
+            CardGame.complete.set(true);
         }
         /*
         synchronized (this) {
