@@ -27,7 +27,9 @@ public class CardGame {
 
 
     public static void main(String[] args) throws IOException {
-        int numPlayers = validateInput();
+        Scanner inputPlayers = new Scanner(System.in);
+        System.out.print("Please enter the number of players: ");
+        int numPlayers = validateInput(inputPlayers);
 
         ArrayList<Integer> packArr = importPack(numPlayers);
         // Initialises array of player hand and deck objects.
@@ -53,11 +55,10 @@ public class CardGame {
     /**
      * Method to set up the game for the user according to the number of players.
      *
+     * @param inputPlayers The user inputted number of players in the game.
      * @return The number of players in the game.
      */
-    public static int validateInput() {
-        Scanner inputPlayers = new Scanner(System.in);
-        System.out.print("Please enter the number of players: ");
+    public static int validateInput(Scanner inputPlayers) {
         numPlayers = 0;
 
         try {
