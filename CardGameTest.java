@@ -2,6 +2,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -75,23 +76,27 @@ public class CardGameTest {
         fail("NumberFormatException should have been thrown.");
     }
 
-    @Test
-    public void validatePackInput() {
+    // Tests validatePackInput method with an invalid non-existing file name.
+    @Test(expected = FileNotFoundException.class)
+    public void testValidatePackInput_IllegalFileName() {
+        Scanner inputPack = new Scanner("invalid.txt");
+        CardGame.validatePackInput(inputPack);
+        fail("FileNotFoundException should have been thrown.");
     }
 
     @Test
-    public void importPack() {
+    public void testImportPack() {
     }
 
     @Test
-    public void dealCards() {
+    public void testDealCards() {
     }
 
     @Test
-    public void genHashMap() {
+    public void testGenHashMap() {
     }
 
     @Test
-    public void countFrequencies() {
+    public void testCountFrequencies() {
     }
 }
