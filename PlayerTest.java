@@ -1,82 +1,82 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-class PlayerTest {
+public class PlayerTest {
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() throws Exception {
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getHand() {
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
-    void getHandCard() {
+    public void getHand() {
     }
 
     @Test
-    void getHandSize() {
+    public void getHandCard() {
     }
 
     @Test
-    void getPlayer() {
+    public void getHandSize() {
     }
 
     @Test
-    void addToHand() {
+    public void getPlayer() {
     }
 
     @Test
-    void remFromHand() {
+    public void addToHand() {
     }
 
     @Test
-    void drawValue() {
+    public void remFromHand() {
     }
 
     @Test
-    void draw() {
+    public void drawValue() {
     }
 
     @Test
-    void discard() {
+    public void draw() {
     }
 
     @Test
-    void keep() {
+    public void discard() {
     }
 
     @Test
-    void remove() {
+    public void keep() {
     }
 
     @Test
-    void viewArray() {
+    public void remove() {
     }
 
     @Test
-    void strategy() {
+    public void viewArray() {
     }
 
     @Test
-    void writeToFile() {
+    public void strategy() {
     }
 
     @Test
-    void createFile() {
+    public void writeToFile() {
     }
 
     @Test
-    void run() {
+    public void createFile() {
     }
 
     @Test
-    void isWinner() {
+    public void run() {
+    }
+
+    @Test
+    public void isWinner() {
     }
 }
