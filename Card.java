@@ -1,5 +1,5 @@
 /**
- * Handles the card generation and distribution for the game.
+ * Handles the creation and checking of card objects.
  *
  * @author 014485
  * @author 054530
