@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author 014485
  * @author 054530
- * @version 1.0
+ * @version 1.1
  */
 public class CardGame {
     // Creates array of player hand and card deck objects.
@@ -32,11 +32,16 @@ public class CardGame {
     static int numPlayers;
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        // Takes input for the number of players.
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
         int numPlayers = validateInput(inputPlayers);
 
-        ArrayList<Integer> packArr = importPack(numPlayers);
+        // Takes input for the file name of the pack.
+        Scanner inputPack = new Scanner(System.in);
+        System.out.print("Please enter location of pack to load: ");
+        ArrayList<Integer> packArr = importPack(inputPack, numPlayers);
+
         // Initialises array of player hand and deck objects.
         playerObj = new Player[numPlayers];
         deckObj = new CardDeck[numPlayers];
@@ -87,13 +92,12 @@ public class CardGame {
     /**
      * Method which imports the pack of cards from a given .txt file.
      *
+     * @param inputPack  The file name of the pack.
      * @param numPlayers The number of players in the game.
      * @return The array of cards in the pack.
      * @throws IOException Failures to read the given file.
      */
-    public static ArrayList<Integer> importPack(int numPlayers) throws IOException {
-        Scanner inputPack = new Scanner(System.in);
-        System.out.print("Please enter location of pack to load: ");
+    public static ArrayList<Integer> importPack(Scanner inputPack, int numPlayers) throws IOException {
         String packIn = inputPack.nextLine();
         BufferedReader in = null;
 
@@ -124,6 +128,7 @@ public class CardGame {
             }
             numLine++;
         }
+        // Both hands and decks will be drawn from a pack which contains 8n cards, where n is number of players.
         if (numLine != 8 * numPlayers) {
             System.out.println("The number of lines in the pack file should be " + numPlayers * 8);
             System.exit(1);
