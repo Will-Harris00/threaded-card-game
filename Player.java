@@ -262,7 +262,6 @@ public class Player extends Thread {
         viewArray(" initial hand ", true);
         writeToFile("player", System.lineSeparator());
         while (!CardGame.complete.get()) {
-            isWinner();
             /*
             if (CardGame.complete.get()) {
                 Thread.currentThread().interrupt();
@@ -287,6 +286,12 @@ public class Player extends Thread {
                         viewArray(" current hand is ", true);
                         writeToFile("player", System.lineSeparator());
                     }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    isWinner();
                     System.out.println(getPlayer() + " Deck Not Zero");
                 } else {
                     System.out.println(getPlayer() + " Empty Deck");
