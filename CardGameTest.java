@@ -28,9 +28,9 @@ public class CardGameTest {
     @Test
     public void testValidateNumPlayersInput() throws NumberFormatException, IllegalNumPlayersSizeException {
         // Creates an input which can be parsed as an integer greater than 1.
-        Scanner inputPlayersPosiInt = new Scanner("4");
+        Scanner inputPlayersPosInt = new Scanner("4");
         int expected = 4;
-        int result = CardGame.validateNumPlayersInput(inputPlayersPosiInt);
+        int result = CardGame.validateNumPlayersInput(inputPlayersPosInt);
         assertEquals(expected, result);
     }
 
