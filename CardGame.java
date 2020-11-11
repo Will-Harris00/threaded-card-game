@@ -57,8 +57,6 @@ public class CardGame {
 
         for (Player player : playerObj) {
             player.start();
-            player.setName("Player" + player.getPlayer());
-            System.out.println(player.getName());
         }
     }
 
@@ -169,7 +167,6 @@ public class CardGame {
             while (playerObj[numPlayers - 1].getHandSize() < 4) {
                 Card c = new Card();
                 c.setValue(packArr.get(i));
-                c.setHolder(j + 1);
                 playerObj[j].addToHand(c);
                 System.out.println("\nHand Size: " + playerObj[j].getHandSize());
                 System.out.println("Player: " + (j + 1));
@@ -185,7 +182,6 @@ public class CardGame {
             // Deals cards to players' decks.
             Card c = new Card();
             c.setValue(packArr.get(i));
-            c.setHolder(j + 1);
             deckObj[j].addToDeck(c);
             System.out.println("\nDeck Size: " + deckObj[j].getDeckSize());
             System.out.println("Deck: " + (j + 1));

@@ -206,17 +206,14 @@ public class Player extends Thread {
 
     // Method for each player to play the game until a winner is established.
     public void run() {
-        // synchronized (this) {
         isWinner();
         createFile("player");
         createFile("deck");
         viewArray(" initial hand ", true);
         writeToFile("player", System.lineSeparator());
         while (!CardGame.complete.get()) {
-            System.out.println(Thread.currentThread().getName() + CardGame.complete);
-            // synchronized (this) {
-                if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
-                    synchronized (this) {
+            if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
+                synchronized (this) {
                     Card c = draw();
 
                     strategy(c);
@@ -225,13 +222,12 @@ public class Player extends Thread {
                         viewArray(" current hand is ", true);
                         writeToFile("player", System.lineSeparator());
                     }
-                    }
-                    isWinner();
-                    System.out.println(getPlayer() + " Deck Not Zero");
-                } else {
-                    System.out.println(getPlayer() + " Empty Deck");
                 }
-            //}
+                isWinner();
+                System.out.println(getPlayer() + " Deck Not Zero");
+            } else {
+                System.out.println(getPlayer() + " Empty Deck");
+            }
         }
         // Writes the final output texts for each player output file.
         StringBuilder writeString = new StringBuilder();

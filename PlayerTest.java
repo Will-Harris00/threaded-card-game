@@ -2,22 +2,36 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class PlayerTest {
+    private Player env;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        env = new Player(1);
+        // set up a target test hand
+        Card n = new Card();
+        n.setValue(5);
+        for (int i = 0; i < 3; i ++) {
+            env.getHand().add(n);
+        }
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown () {
+        env = null;
+    }
+
+    @Test
+    public void testGetHandCard() {
+        int expected = env.getHand().get(0).getValue();
+        // run the Checker
+        assertEquals(expected, env.getHandCard(0).getValue());
     }
 
     @Test
     public void getHand() {
-    }
-
-    @Test
-    public void getHandCard() {
     }
 
     @Test

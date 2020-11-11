@@ -7,25 +7,7 @@
  */
 
 public class Card {
-    private int holder;
     private int value;
-
-
-    /**
-     * @return The player ID who owns the card.
-     */
-    public int getHolder() {
-        return this.holder;
-    }
-
-
-    /**
-     * @param owner The owner of the card to this player ID.
-     */
-    public void setHolder(int owner) {
-        this.holder = owner;
-    }
-
 
     /**
      * @return The value of the card.
