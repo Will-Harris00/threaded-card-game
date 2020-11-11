@@ -25,10 +25,10 @@ public class CardGame {
     // Creates array of player hand and card deck objects.
     public static Player[] playerObj;
     public static CardDeck[] deckObj;
-    // public static AtomicBoolean complete;
-    // public static AtomicInteger winner;
-    public static boolean complete;
-    public static int winner = 0;
+    public static AtomicBoolean complete;
+    public static AtomicInteger winner;
+    // public static boolean complete;
+    // public static int winner = 0;
     static int numPlayers;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -48,8 +48,8 @@ public class CardGame {
 
         System.out.println("\nCard Pack: " + packArr.toString());
         dealCards(packArr, numPlayers, playerObj, deckObj);
-        //complete = new AtomicBoolean(false);
-        //winner = new AtomicInteger(0);
+        complete = new AtomicBoolean(false);
+        winner = new AtomicInteger(0);
 
         for (Player player : playerObj) {
             player.start();

@@ -106,8 +106,7 @@ public class Player extends Thread {
 
         // If drawn card is preferred, keep card and discard the first non-preferred card in hand.
         if (c.getValue() == getPlayer()) {
-            writeToFile("Player: " + getPlayer() + ", Preferred: " + c.getValue());
-            writeToFile(System.lineSeparator());
+            System.out.println(("Player: " + getPlayer() + ", Preferred: " + c.getValue()));
             for (Card j : hand) {
                 if (j.getValue() != getPlayer()) {
                     remove(j);
@@ -130,8 +129,7 @@ public class Player extends Thread {
         }
         // If drawn card is no players preferred card, perform additional checks.
         else {
-            writeToFile("Player: " + getPlayer() + ", Card Value: " + c.getValue());
-            writeToFile(System.lineSeparator());
+            System.out.println("Player: " + getPlayer() + ", Card Value: " + c.getValue());
             // If hand doesn't contain preferred cards, check hand for other players' preferred cards and discard them.
             for (Card j : hand) {
                 if (j.getValue() <= CardGame.numPlayers && j.getValue() != getPlayer()) {
@@ -228,15 +226,14 @@ public class Player extends Thread {
 
 
     // Displays the cards in the hand of a player.
-    public void seeHand() {
+    public void seeHand(String delim) {
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player " + getPlayer() + " current hand is ");
+        writeString.append("player " + getPlayer() + delim);
         for (int i = 0; i < CardGame.playerObj[getPlayer() - 1].getHand().size(); i++) {
             writeString.append(CardGame.playerObj[getPlayer() - 1].getHandCard(i).getValue()).append(" ");
         }
         System.out.println(writeString.toString().trim());
         writeToFile(writeString.toString().trim());
-        writeToFile(System.lineSeparator());
     }
 
 
@@ -273,22 +270,35 @@ public class Player extends Thread {
         // synchronized (this) {
         isWinner();
         createFile();
-        while (!CardGame.complete) {
+        seeHand(" initial hand ");
+        writeToFile(System.lineSeparator());
+        while (!CardGame.complete.get()) {
             isWinner();
+            /*
+            if (CardGame.complete.get()) {
+                Thread.currentThread().interrupt();
+            }
+
+             */
 
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // e.printStackTrace();
+                // Thread.currentThread().interrupt();
             }
 
             System.out.println(Thread.currentThread().getName() + CardGame.complete);
             synchronized (this) {
                 if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
-                    seeHand();
                     Card c = draw();
 
                     strategy(c);
+                    // writes current hand to deck
+                    if (!CardGame.complete.get()) {
+                        seeHand(" current hand is ");
+                        writeToFile(System.lineSeparator());
+                    }
 
                     System.out.println(getPlayer() + " Deck Not Zero");
                 } else {
@@ -303,9 +313,27 @@ public class Player extends Thread {
                 }
             }
              */
-        // writeToFile(Boolean.toString(isWinner()));
-        writeToFile(System.lineSeparator());
-        seeHand();
+        Thread.currentThread().interrupt();
+        StringBuilder writeString = new StringBuilder();
+        if (CardGame.winner.get() != pNumber) {
+            writeString.append("player " + CardGame.winner.get() +
+                    " has informed player " + pNumber +
+                    " that player " + CardGame.winner.get() + " has won");
+            writeString.append(System.lineSeparator());
+            writeString.append("player " + pNumber + " exits");
+            writeString.append(System.lineSeparator());
+            writeToFile(writeString.toString());
+            seeHand(" hand: ");
+
+        } else {
+            System.out.println("player " + pNumber + " wins");
+            writeString.append("player " + pNumber + " wins");
+            writeString.append(System.lineSeparator());
+            writeString.append("player " + pNumber + " exits");
+            writeString.append(System.lineSeparator());
+            writeToFile(writeString.toString());
+            seeHand(" final hand: ");
+        }
         //}
     }
 
@@ -323,7 +351,6 @@ public class Player extends Thread {
                 return;
             }
         }
-        /*
         synchronized (this) {
             CardGame.complete.compareAndSet(false, true);
             if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
@@ -332,12 +359,13 @@ public class Player extends Thread {
                 CardGame.complete.set(true);
             }
         }
-         */
+        /*
         synchronized (this) {
             if (CardGame.winner == 0) {
                 System.out.println("player " + pNumber + " wins");
                 CardGame.winner = pNumber;
             }
         }
+         */
     }
 }
