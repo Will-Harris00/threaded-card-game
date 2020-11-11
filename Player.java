@@ -177,7 +177,6 @@ public class Player extends Thread {
         }
     }
 
-
     /**
      * Writes the output of actions in the game to a file.
      *
@@ -255,13 +254,6 @@ public class Player extends Thread {
             writeToFile("player", writeString.toString());
             viewArray(" final hand: ", true);
         }
-        /*
-        // Writes final player deck to deck output file.
-        while (CardGame.deckObj[pNumber - 1].getDeckSize() != 4) {
-            System.out.println("Waiting on thread before " + pNumber + " len "+ CardGame.deckObj[pNumber - 1].getDeckSize());
-            Thread.yield();
-        }
-         */
         viewArray("deck" + pNumber + " contents: ", false);
     }
 
