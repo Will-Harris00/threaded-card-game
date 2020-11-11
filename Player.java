@@ -131,7 +131,7 @@ public class Player extends Thread {
         return c;
     }
 
-    // Displays the cards in the hand of a player.
+    // Displays the cards in the hand/deck of a player.
     public void viewArray(String delim, boolean isHand) {
         StringBuilder writeString = new StringBuilder();
         // Writes a hand array to output file.
