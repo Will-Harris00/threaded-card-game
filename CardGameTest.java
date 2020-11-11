@@ -29,7 +29,7 @@ public class CardGameTest {
     }
 
     /**
-     * Tests validateNumPlayersInput method with a valid input of a positive integer.
+     * Tests validateNumPlayersInput method with a valid input of a positive integer greater than 1.
      *
      * @throws NumberFormatException When an input which cannot be parsed as an integer is entered.
      */
@@ -86,7 +86,7 @@ public class CardGameTest {
     // Tests validatePackInput method with an invalid non-existing file name.
     @Test(expected = FileNotFoundException.class)
     public void testValidatePackInput_IllegalFileName() {
-        Scanner inputPack = new Scanner("invalid.txt");
+        Scanner inputPack = new Scanner("invalid");
         CardGame.validatePackInput(inputPack);
         fail("FileNotFoundException should have been thrown.");
     }
