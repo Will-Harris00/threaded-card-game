@@ -24,6 +24,7 @@ public class CardGame {
     public static Player[] playerObj;
     public static CardDeck[] deckObj;
     static int numPlayers;
+    static boolean winner = true;
 
 
     public static void main(String[] args) throws IOException {
@@ -46,7 +47,7 @@ public class CardGame {
 
         for (Player player : playerObj) {
             player.start();
-            player.setName("Player" + player.getOwner());
+            player.setName("Player" + player.getPlayer());
             System.out.println(player.getName());
         }
     }
@@ -249,26 +250,5 @@ public class CardGame {
             }
             return playGame;
         }
-    }
-
-
-    /**
-     * Method which declares the winner of the game.
-     *
-     * @param player The ID of the player whose hand to check.
-     * @return The name of the winner.
-     */
-    public static boolean isWinner(Player player) {
-        boolean winner = true;
-        int match = player.getHandCard(0).getValue();
-
-        for (Card element : player.getHand()) {
-            if (element.getValue() != match) {
-                // System.out.print(element.getValue());
-                winner = false;
-                break;
-            }
-        }
-        return winner;
     }
 }
