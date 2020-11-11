@@ -1,11 +1,11 @@
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CardGameTest {
 
@@ -23,13 +23,12 @@ class CardGameTest {
 
     @Test
     void validateInput() {
-        Scanner inputPlayersInt = new Scanner("4");
-        assertDoesNotThrow(() -> CardGame.validateInput(inputPlayersInt));
-        // Scanner inputPlayersString = new Scanner("string");
-        // assertThrows(NumberFormatException.class, () -> CardGame.validateInput(inputPlayersString));
-    }
-
-    private void assertThrows(Class<NumberFormatException> numberFormatExceptionClass, Object o) {
+        // Checks that a positive integer input doesn't throw any exceptions.
+        Scanner inputPlayersPosInt = new Scanner("4");
+        assertDoesNotThrow(() -> CardGame.validateInput(inputPlayersPosInt));
+        // Checks that a string input throws NumberFormatException.
+        Scanner inputPlayersString = new Scanner("string");
+        assertThrows(NumberFormatException.class, () -> CardGame.validateInput(inputPlayersString));
     }
 
     @Test
