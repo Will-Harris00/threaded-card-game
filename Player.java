@@ -86,13 +86,13 @@ public class Player extends Thread {
         // Player discards card to the bottom of the deck to their right.
         if (getPlayer() != CardGame.numPlayers) {
             CardGame.deckObj[getPlayer()].addToDeck(n);
-            writeString.append("player " + getPlayer() + " discards " +
-                    n.getValue() + " to deck " + (getPlayer() + 1));
+            writeString.append("player ").append(getPlayer()).append(" discards ").append(n.getValue())
+                    .append(" to deck ").append(getPlayer() + 1);
         } else {
             // Edge case when last player discards card back to the first player's deck.
             CardGame.deckObj[0].addToDeck(n);
-            writeString.append("player " + CardGame.numPlayers +
-                    " discards a " + n.getValue() + " to deck 1");
+            writeString.append("player ").append(CardGame.numPlayers).append(" discards a ").append(n.getValue())
+                    .append(" to deck 1");
         }
 
         System.out.println(writeString.toString().trim());
@@ -117,8 +117,8 @@ public class Player extends Thread {
     public synchronized Card draw() {
         // player picks a card from the top of the deck to their left
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player " + getPlayer() + " draws a " +
-                drawValue() + " from deck " + getPlayer());
+        writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue()).append(" from deck ")
+                .append(getPlayer());
 
         Card c = CardGame.deckObj[getPlayer() - 1].getDeckCard(0);
 
@@ -136,7 +136,7 @@ public class Player extends Thread {
         StringBuilder writeString = new StringBuilder();
         // Writes a hand array to output file.
         if (isHand) {
-            writeString.append("player " + getPlayer() + delim);
+            writeString.append("player ").append(getPlayer()).append(delim);
             for (int i = 0; i < CardGame.playerObj[getPlayer() - 1].getHand().size(); i++) {
                 writeString.append(CardGame.playerObj[getPlayer() - 1].getHandCard(i).getValue()).append(" ");
             }
@@ -301,24 +301,27 @@ public class Player extends Thread {
             }
              */
         // Thread.currentThread().interrupt();
+
+        // Writes the final output texts for each player output file.
         StringBuilder writeString = new StringBuilder();
+        // Outputs for players who didn't win.
         if (CardGame.winner.get() != pNumber) {
             if (CardGame.winner.get() == 0) {
                 CardGame.winner.get();
             }
-            writeString.append("player " + CardGame.winner.get() +
-                    " has informed player " + pNumber +
-                    " that player " + CardGame.winner.get() + " has won");
+            writeString.append("player ").append(CardGame.winner.get()).append(" has informed player ")
+                    .append(pNumber).append(" that player ").append(CardGame.winner.get()).append(" has won");
             writeString.append(System.lineSeparator());
-            writeString.append("player " + pNumber + " exits");
+            writeString.append("player ").append(pNumber).append(" exits");
             writeString.append(System.lineSeparator());
             writeToFile("player", writeString.toString());
             viewArray(" hand: ", true);
         } else {
+            // Outputs for player who won.
             System.out.println("player " + pNumber + " wins");
-            writeString.append("player " + pNumber + " wins");
+            writeString.append("player ").append(pNumber).append(" wins");
             writeString.append(System.lineSeparator());
-            writeString.append("player " + pNumber + " exits");
+            writeString.append("player ").append(pNumber).append(" exits");
             writeString.append(System.lineSeparator());
             writeToFile("player", writeString.toString());
             viewArray(" final hand: ", true);
