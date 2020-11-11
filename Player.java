@@ -175,70 +175,6 @@ public class Player extends Thread {
                 }
             }
         }
-
-        /*
-        // If drawn card is preferred, keep card and discard the first non-preferred card in hand.
-        if (c.getValue() == getPlayer()) {
-            System.out.println(("Player: " + getPlayer() + ", Preferred: " + c.getValue()));
-            for (Card j : hand) {
-                if (j.getValue() != getPlayer()) {
-                    remove(j);
-                    discard(j);
-                    doneDiscard = true;
-                    break;
-                }
-            }
-            if (!doneDiscard) {
-                discard(c);
-            } else {
-                keep(c);
-            }
-        }
-
-        // If drawn card is another player's preferred card, then discard.
-        else if (c.getValue() <= CardGame.numPlayers) {
-            discard(c);
-        }
-        // If drawn card is no players preferred card, perform additional checks.
-        else {
-            System.out.println("Player: " + getPlayer() + ", Card Value: " + c.getValue());
-            // If hand doesn't contain preferred cards, check hand for other players' preferred cards and discard them.
-            for (Card j : hand) {
-                if (j.getValue() <= CardGame.numPlayers && j.getValue() != getPlayer()) {
-                    discard(j);
-                    remove(j);
-                    doneDiscard = true;
-                    break;
-                }
-            }
-            if (doneDiscard) {
-                keep(c);
-            }
-            // If hand contains no players' preferred cards, check for matching cards with their existing hand.
-            else {
-                for (Card j : hand) {
-                    if (j.getValue() == c.getValue()) {
-                        for (Card k : hand) {
-                            if (k.getValue() != getPlayer() && k.getValue() != c.getValue()) {
-                                remove(j);
-                                discard(k);
-                                doneDiscard = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (doneDiscard) {
-                        keep(c);
-                    }
-                    // If hand contains no players' preferred cards and no matching cards, discard drawn card.
-                    else {
-                        discard(c);
-                    }
-                    break;
-                }
-            }
-        }
-        */
     }
 
 
@@ -278,15 +214,10 @@ public class Player extends Thread {
         viewArray(" initial hand ", true);
         writeToFile("player", System.lineSeparator());
         while (!CardGame.complete.get()) {
-            /*
-            if (CardGame.complete.get()) {
-                Thread.currentThread().interrupt();
-            }
-             */
-
             System.out.println(Thread.currentThread().getName() + CardGame.complete);
-            synchronized (this) {
+            // synchronized (this) {
                 if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
+                    synchronized (this) {
                     Card c = draw();
 
                     strategy(c);
@@ -295,21 +226,14 @@ public class Player extends Thread {
                         viewArray(" current hand is ", true);
                         writeToFile("player", System.lineSeparator());
                     }
+                    }
                     isWinner();
                     System.out.println(getPlayer() + " Deck Not Zero");
                 } else {
                     System.out.println(getPlayer() + " Empty Deck");
                 }
-            }
+            //}
         }
-            /*
-            for (Player player : CardGame.playerObj) {
-                if (player.getPlayer() != this.pNumber) {
-                    player.interrupt();
-                }
-            }
-             */
-        // Thread.currentThread().interrupt();
         // Writes the final output texts for each player output file.
         StringBuilder writeString = new StringBuilder();
         // Outputs for players who didn't win.
@@ -331,8 +255,13 @@ public class Player extends Thread {
             writeToFile("player", writeString.toString());
             viewArray(" final hand: ", true);
         }
-
+        /*
         // Writes final player deck to deck output file.
+        while (CardGame.deckObj[pNumber - 1].getDeckSize() != 4) {
+            System.out.println("Waiting on thread before " + pNumber + " len "+ CardGame.deckObj[pNumber - 1].getDeckSize());
+            Thread.yield();
+        }
+         */
         viewArray("deck" + pNumber + " contents: ", false);
     }
 
@@ -347,19 +276,13 @@ public class Player extends Thread {
                 return;
             }
         }
-        CardGame.complete.compareAndSet(false, true);
-        if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
-            System.out.println("player " + pNumber + " wins");
-            CardGame.winner.compareAndSet(0, pNumber);
-            CardGame.complete.set(true);
-        }
-        /*
         synchronized (this) {
-            if (CardGame.winner == 0) {
+            CardGame.complete.compareAndSet(false, true);
+            if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
                 System.out.println("player " + pNumber + " wins");
-                CardGame.winner = pNumber;
+                CardGame.winner.compareAndSet(0, pNumber);
+                CardGame.complete.set(true);
             }
         }
-         */
     }
 }
