@@ -2,7 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,11 +27,9 @@ public class CardGame {
     public static CardDeck[] deckObj;
     public static AtomicBoolean complete;
     public static AtomicInteger winner;
-    // public static boolean complete;
-    // public static int winner = 0;
     static int numPlayers;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // Takes input for the number of players.
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
