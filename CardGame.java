@@ -97,7 +97,7 @@ public class CardGame {
         try {
             in = new BufferedReader(new FileReader(packIn));
         } catch (FileNotFoundException e) {
-            System.out.println("Please specify the pack to load.");
+            System.out.println("Input must be an existing file name.");
             System.exit(1);
         }
 
