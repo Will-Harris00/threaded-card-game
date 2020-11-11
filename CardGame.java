@@ -33,12 +33,13 @@ public class CardGame {
         // Takes input for the number of players.
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
-        int numPlayers = validateInput(inputPlayers);
+        int numPlayers = validateNumPlayersInput(inputPlayers);
 
         // Takes input for the file name of the pack.
         Scanner inputPack = new Scanner(System.in);
         System.out.print("Please enter location of pack to load: ");
-        ArrayList<Integer> packArr = importPack(inputPack, numPlayers);
+        BufferedReader in = validatePackInput(inputPack);
+        ArrayList<Integer> packArr = importPack(in, numPlayers);
 
         // Initialises array of player hand and deck objects.
         playerObj = new Player[numPlayers];
@@ -68,7 +69,7 @@ public class CardGame {
      * @param inputPlayers The user inputted number of players in the game.
      * @return The number of players in the game.
      */
-    public static int validateInput(Scanner inputPlayers) {
+    public static int validateNumPlayersInput(Scanner inputPlayers) {
         numPlayers = 0;
 
         try {
@@ -86,16 +87,13 @@ public class CardGame {
         return numPlayers;
     }
 
-
     /**
-     * Method which imports the pack of cards from a given .txt file.
+     * Method which validates the input for the file name of the pack of cards.
      *
-     * @param inputPack  The file name of the pack.
-     * @param numPlayers The number of players in the game.
-     * @return The array of cards in the pack.
-     * @throws IOException Failures to read the given file.
+     * @param inputPack The file name of the pack.
+     * @return The file containing the pack of cards.
      */
-    public static ArrayList<Integer> importPack(Scanner inputPack, int numPlayers) throws IOException {
+    public static BufferedReader validatePackInput(Scanner inputPack) {
         String packIn = inputPack.nextLine();
         BufferedReader in = null;
 
@@ -107,6 +105,18 @@ public class CardGame {
             System.exit(1);
         }
 
+        return in;
+    }
+
+    /**
+     * Method which imports the pack of cards from a given .txt file.
+     *
+     * @param in         The file containing the pack of cards.
+     * @param numPlayers The number of players in the game.
+     * @return The array of cards in the pack.
+     * @throws IOException Failures to read the given file.
+     */
+    public static ArrayList<Integer> importPack(BufferedReader in, int numPlayers) throws IOException {
         String line;
         ArrayList<Integer> packArr = new ArrayList<>();
         int numLine = 0;
