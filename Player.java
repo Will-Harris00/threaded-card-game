@@ -316,6 +316,9 @@ public class Player extends Thread {
         Thread.currentThread().interrupt();
         StringBuilder writeString = new StringBuilder();
         if (CardGame.winner.get() != pNumber) {
+            if (CardGame.winner.get() == 0) {
+                CardGame.winner.get();
+            }
             writeString.append("player " + CardGame.winner.get() +
                     " has informed player " + pNumber +
                     " that player " + CardGame.winner.get() + " has won");
