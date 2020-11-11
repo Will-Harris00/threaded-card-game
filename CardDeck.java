@@ -46,23 +46,6 @@ public class CardDeck {
 
 
     /**
-     * @return The player ID who owns the deck.
-     */
-    public int getOwner() {
-        return number;
-    }
-
-
-    /**
-     * @param index The card in the deck to search for and set value to.
-     * @param val   The value to set the card in the deck to.
-     */
-    public void setDeckCard(int index, Card val) {
-        this.deck.set(index, val);
-    }
-
-
-    /**
      * @param val The value of the card to add to the deck.
      */
     public void addToDeck(Card val) {
@@ -73,5 +56,7 @@ public class CardDeck {
     /**
      * @param index The card in the deck to search for and remove.
      */
-    public void remFromDeck(int index) { this.deck.remove(index); }
+    public void remFromDeck(int index) {
+        this.deck.remove(index);
+    }
 }
