@@ -1,49 +1,42 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Scanner;
+public class CardGameTest {
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-class CardGameTest {
-
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() throws Exception {
     }
 
-    @AfterEach
-    void tearDown() {
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
-    void main() {
+    public void main() {
     }
 
     @Test
-    void validateInput() {
-        // Checks that a positive integer input doesn't throw any exceptions.
-        Scanner inputPlayersPosInt = new Scanner("4");
-        assertDoesNotThrow(() -> CardGame.validateInput(inputPlayersPosInt));
-        // Checks that a string input throws NumberFormatException.
-        Scanner inputPlayersString = new Scanner("string");
-        assertThrows(NumberFormatException.class, () -> CardGame.validateInput(inputPlayersString));
+    public void validateNumPlayersInput() {
     }
 
     @Test
-    void importPack() {
+    public void validatePackInput() {
     }
 
     @Test
-    void dealCards() {
+    public void importPack() {
     }
 
     @Test
-    void genHashMap() {
+    public void dealCards() {
     }
 
     @Test
-    void countFrequencies() {
+    public void genHashMap() {
+    }
+
+    @Test
+    public void countFrequencies() {
     }
 }
