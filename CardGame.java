@@ -29,7 +29,7 @@ public class CardGame {
     public static AtomicInteger winner;
     static int numPlayers;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalNumPlayersSizeException {
         // Takes input for the number of players.
         Scanner inputPlayers = new Scanner(System.in);
         System.out.print("Please enter the number of players: ");
@@ -67,15 +67,13 @@ public class CardGame {
      * @param inputPlayers The user inputted number of players in the game.
      * @return The number of players in the game.
      */
-    public static int validateNumPlayersInput(Scanner inputPlayers) {
+    public static int validateNumPlayersInput(Scanner inputPlayers) throws IllegalNumPlayersSizeException {
         numPlayers = 0;
 
         try {
             numPlayers = Integer.parseInt(inputPlayers.nextLine());
-            while (numPlayers < 2) {
-                System.out.println("Input must be a positive integer with a minimum of two players.");
-                System.out.print("Please enter the number of players: ");
-                numPlayers = inputPlayers.nextInt();
+            if (numPlayers < 2) {
+                throw new IllegalNumPlayersSizeException("Input must be a positive integer which is two or more.");
             }
         } catch (NumberFormatException e) {
             System.out.println("Input must be an integer.");
