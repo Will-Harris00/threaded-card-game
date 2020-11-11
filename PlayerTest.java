@@ -27,9 +27,7 @@ public class PlayerTest {
 
     @Test
     public void testGetHandCard() {
-        int expected = pl.getHand().get(0).getValue();
-        // run the Checker
-        assertEquals(expected, pl.getHandCard(0).getValue());
+        assertEquals(5, pl.getHandCard(0).getValue());
     }
 
     @Test
@@ -58,6 +56,8 @@ public class PlayerTest {
 
     @Test
     public void testRemFromHand() {
+        pl.remFromHand(0);
+        assertEquals(3, pl.getHandSize());
     }
 
     @Test
