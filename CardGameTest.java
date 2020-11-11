@@ -7,6 +7,13 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests the CardGame class through smaller unit tests which can be performed quickly.
+ *
+ * @author 014485
+ * @author 054530
+ * @version 1.0
+ */
 public class CardGameTest {
 
     @Before
