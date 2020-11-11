@@ -2,6 +2,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manages actions of the players in the game.
@@ -206,7 +208,7 @@ public class Player extends Thread {
 
     // Method for each player to play the game until a winner is established.
     public void run() {
-        isWinner();
+        isWinner(CardGame.complete, CardGame.winner);
         createFile("player");
         createFile("deck");
         viewArray(" initial hand ", true);
@@ -223,7 +225,7 @@ public class Player extends Thread {
                         writeToFile("player", System.lineSeparator());
                     }
                 }
-                isWinner();
+                isWinner(CardGame.complete, CardGame.winner);
                 System.out.println(getPlayer() + " Deck Not Zero");
             } else {
                 System.out.println(getPlayer() + " Empty Deck");
@@ -256,7 +258,7 @@ public class Player extends Thread {
     /**
      * Method which declares the winner of the game.
      */
-    public void isWinner() {
+    public void isWinner(AtomicBoolean complete, AtomicInteger winner) {
         int match = this.hand.get(0).getValue();
 
         for (Card element : this.hand) {
@@ -265,11 +267,10 @@ public class Player extends Thread {
             }
         }
         synchronized (this) {
-            CardGame.complete.compareAndSet(false, true);
-            if (CardGame.winner.get() == 0 && CardGame.complete.get()) {
+            complete.compareAndSet(false, true);
+            if (winner.get() == 0 && complete.get()) {
+                winner.compareAndSet(0, pNumber);
                 System.out.println("player " + pNumber + " wins");
-                CardGame.winner.compareAndSet(0, pNumber);
-                CardGame.complete.set(true);
             }
         }
     }
