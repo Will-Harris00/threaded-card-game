@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,9 +87,10 @@ public class PlayerTest {
         Card n = new Card();
         n.setValue(7);
         pl.getHand().add(n);
-        int expectedVal = pl.getHand().get(4).getValue();
+        int expected = pl.getHand().get(4).getValue();
+        int result = n.getValue();
         assertEquals(5, pl.getHandSize());
-        assertEquals(expectedVal, n.getValue());
+        assertEquals(expected, result);
     }
 
     @Test
@@ -99,14 +101,68 @@ public class PlayerTest {
 
     @Test
     public void testDrawValue() {
+        CardDeck tDeck = new CardDeck(1);
+        int expected = 0;
+        for (int i = 1; i <= 4; i++) {
+            Card tCard = new Card();
+            tCard.setValue(i);
+            tDeck.addToDeck(tCard);
+            if (i == 1) {
+                expected = tCard.getValue();
+            }
+        }
+        int result = tDeck.getDeck().get(0).getValue();
+        assertEquals(expected, result);
     }
 
     @Test
     public void testDraw() {
+        CardDeck tDeck = new CardDeck(1);
+        Card expected = null;
+        Card tCard = new Card();
+        for (int i = 1; i <= 4; i++) {
+            tCard.setValue(i);
+            tDeck.addToDeck(tCard);
+            if (i == 1) {
+                expected = tCard;
+            }
+        }
+        Card result = tDeck.getDeck().get(0);
+        assertEquals(expected, result);
     }
 
     @Test
     public void testDiscard() {
+        int pNumber = 2;
+        Player tPlayer = new Player(pNumber);
+        // single non-preferred card and three preferred in player hand
+        for (int i = 1; i <= 3; i++) {
+            Card tempCard = new Card();
+            tempCard.setValue(pNumber);
+            tPlayer.addToHand(tempCard);
+        }
+        Card expected = new Card();
+        expected.setValue(pNumber - 1);
+        tPlayer.addToHand(expected);
+
+        Card tCard = new Card();
+        tCard.setValue(pNumber);
+
+        int index = tPlayer.chooseDiscard();
+
+        tPlayer.getHand().remove(index);
+
+        int match = tPlayer.getHand().get(0).getValue();
+        boolean correctDiscard = true;
+
+        for (Card element : tPlayer.getHand()) {
+            if (element.getValue() != match) {
+                correctDiscard = false;
+                break;
+            }
+        }
+
+        assertEquals(true, correctDiscard);
     }
 
     @Test

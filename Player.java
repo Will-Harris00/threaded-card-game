@@ -170,21 +170,30 @@ public class Player extends Thread {
      * @param card The card drawn by the player.
      */
     public synchronized void strategy(Card card) {
-        boolean doneDiscard = false;
-        Random rand = new Random();
         synchronized (this) {
             // Keep every card that it picks up.
             keep(card);
 
-            while (!doneDiscard) {
-                // Randomly discard a card of non-preferred value which hasn't just been picked up.
-                int index = rand.nextInt(4);
-                if (hand.get(index).getValue() != pNumber) {
-                    discard(hand.get(index));
-                    doneDiscard = true;
-                }
+            int index = chooseDiscard();
+
+            discard(hand.get(index));
+        }
+    }
+
+    public synchronized int chooseDiscard() {
+        boolean doneDiscard = false;
+        Random rand = new Random();
+        int index = -2;
+
+        while (!doneDiscard) {
+            // Randomly discard a card of non-preferred value which hasn't just been picked up.
+            index = rand.nextInt(4);
+            if (hand.get(index).getValue() != pNumber) {
+                doneDiscard = true;
+                // discard(hand.get(index));
             }
         }
+        return index;
     }
 
     /**
