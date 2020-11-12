@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PlayerTest {
+    AtomicBoolean complete;
+    AtomicInteger winner;
     private Player[] plArray;
     private CardDeck[] dkArray;
     private Player plObject;
     private CardDeck dkObject;
-    AtomicBoolean complete;
-    AtomicInteger winner;
 
     // Creates mock objects for player1, card with value 5, and player1's hand to 5, 5, 5, 5.
     @Before
@@ -23,7 +23,7 @@ public class PlayerTest {
         // set up a target test hand
         Card n = new Card();
         n.setValue(5);
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < 4; i++) {
             plObject.getHand().add(n);
         }
     }
@@ -35,7 +35,7 @@ public class PlayerTest {
         // set up a target test deck
         Card m = new Card();
         m.setValue(8);
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < 4; i++) {
             dkObject.getDeck().add(m);
         }
     }
@@ -59,8 +59,9 @@ public class PlayerTest {
         }
     }
 
+    // Removes mock objects after tests to save memory by triggering automatic garbage collection.
     @After
-    public void tearDown () {
+    public void tearDown() {
         plObject = null;
         dkObject = null;
         plArray = null;
@@ -76,6 +77,7 @@ public class PlayerTest {
     public void testGetHand() {
     }
 
+    // Checks if the hand size of a player is equal to the hand size obtained from the player in a different way.
     @Test
     public void testGetHandSize() {
         int expected = plObject.getHand().size();
@@ -86,6 +88,8 @@ public class PlayerTest {
     public void testGetPlayer() {
     }
 
+    // Generates a card of value 7, and then checks both whether the hand size of the player went up from 4 to 5, and
+    // whether the fifth card has value 7.
     @Test
     public void testAddToHand() {
         Card n = new Card();
@@ -97,12 +101,14 @@ public class PlayerTest {
         assertEquals(expected, result);
     }
 
+    // Removes a card from a player's hand and checks if the size of hand went down from 4 to 3.
     @Test
     public void testRemFromHand() {
         plObject.remFromHand(0);
         assertEquals(3, plObject.getHandSize());
     }
 
+    // Creates deck1, then adds cards with values 1, 2, 3, 4, and checks if the first card in deck has value 1.
     @Test
     public void testDrawValue() {
         CardDeck tDeck = new CardDeck(1);
@@ -139,11 +145,13 @@ public class PlayerTest {
     public void testDrawCard() {
     }
 
+    // Creates a hand with three preferred values and one non-preferred value, and checks that the non-preferred
+    // value is the one which is discarded.
     @Test
     public void testChooseDiscard() {
         int pNumber = 2;
         Player tPlayer = new Player(pNumber);
-        // single non-preferred card and three preferred in player hand
+        // Single non-preferred card and three preferred in player hand.
         for (int i = 1; i <= 3; i++) {
             Card tempCard = new Card();
             tempCard.setValue(pNumber);
@@ -155,14 +163,12 @@ public class PlayerTest {
 
         Card tCard = new Card();
         tCard.setValue(pNumber);
-
         int index = tPlayer.chooseDiscard();
-
         tPlayer.getHand().remove(index);
-
         int match = tPlayer.getHand().get(0).getValue();
         boolean correctDiscard = true;
 
+        // Iterates through the player's hand and checks if all cards have preferred value.
         for (Card element : tPlayer.getHand()) {
             if (element.getValue() != match) {
                 correctDiscard = false;
@@ -172,25 +178,30 @@ public class PlayerTest {
         assertTrue(correctDiscard);
     }
 
+    // Tests that the discarded card is transferred from one player's hand to the top of the deck of the player on
+    // the right.
     @Test
     public void testDiscardCard() {
-        // tests if statement within discardCard method
+        // Tests if statement within discardCard method; send from player 2's hand to player 3's deck.
         int pNumber = 2;
         plArray[pNumber - 1].getHandCard(0).setValue(15);
         Card unwantedCard = plArray[pNumber - 1].getHandCard(0);
-        int result = unwantedCard.getValue();
         plObject.discardCard(unwantedCard, pNumber, plArray, dkArray, 3);
+        int result = dkArray[pNumber].getDeckCard(4).getValue();
         assertEquals(15, result);
 
-        // tests else statement for discard to deck zero within discardCard method
+        // Tests else statement within discardCard method; send from player 3's hand to player 1's deck (in a three
+        // player game).
         pNumber = 3;
         plArray[pNumber - 1].getHandCard(0).setValue(17);
         unwantedCard = plArray[pNumber - 1].getHandCard(0);
-        result = unwantedCard.getValue();
         plObject.discardCard(unwantedCard, pNumber, plArray, dkArray, 3);
+        result = dkArray[0].getDeckCard(4).getValue();
         assertEquals(17, result);
     }
 
+    // Creates a new card, then adds it to the player's hand, and checks that the fifth card is the same as the card
+    // added.
     @Test
     public void testKeepCard() {
         int pNumber = 2;
@@ -203,6 +214,7 @@ public class PlayerTest {
         assertEquals(tCard, result);
     }
 
+    // Removes the first card in player 3's hand, and checks that the hand size changed from 4 to 3.
     @Test
     public void testRemoveCard() {
         int pNumber = 3;
@@ -235,6 +247,8 @@ public class PlayerTest {
     public void testRun() {
     }
 
+    // Adds four cards of value 2 to player2's hand, and checks if player2 has a winning hand afterwards, and is
+    // declared as the winner.
     @Test
     public void isWinner() {
         int pNumber = 2;
