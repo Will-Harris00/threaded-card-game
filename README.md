@@ -34,4 +34,4 @@ example, you may input:
 ### Prerequisites
 All of the tests in the test suites provided use JUnit 4.12.
 
-### Summary of Test Suites
+### Using the Test Suite
