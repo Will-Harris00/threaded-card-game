@@ -148,6 +148,8 @@ public class CardGameTest {
         assertFalse(notIdentical);
     }
 
+    // Tests dealCards by inputting a test card pack for a two-player game, and checking that every hand and every
+    // deck has four cards.
     @Test
     public void testDealCards() {
         boolean evenlyDistributed = true;
