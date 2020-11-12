@@ -32,6 +32,8 @@ example, you may input:
 ## Testing
 
 ### Prerequisites
-All of the tests in the test suites provided use JUnit 4.12.
+All tests in the test suites provided use JUnit 4.12.
 
 ### Using the Test Suite
+By running the test suite, TestSuite.java, all tests for CardGame.java
+and Player.java.can be run at once.
