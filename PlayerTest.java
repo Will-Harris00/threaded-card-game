@@ -2,8 +2,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -41,18 +39,22 @@ public class PlayerTest {
 
     @Before
     public void playerArrSetUp() {
-        // create an array of length one containing a single player object
-        plArr = new Player[1];
+        // create an array of length one containing a three player objects
+        plArr = new Player[3];
         // add the player to the player array
-        plArr[0] = pl;
+        for (int i = 0; i < 3; i++) {
+            plArr[i] = pl;
+        }
     }
 
     @Before
     public void deckArrSetUp() {
-        // create an array of length one containing a single deck object
-        plArr = new Player[1];
+        // create an array of length one containing a three deck object
+        dkArr = new CardDeck[3];
         // add the deck to the deck array
-        plArr[0] = pl;
+        for (int i = 0; i < 3; i++) {
+            dkArr[i] = dk;
+        }
     }
 
     @After
@@ -167,6 +169,15 @@ public class PlayerTest {
 
     @Test
     public void testKeep() {
+        int pNumber = 2;
+        Card tCard = new Card();
+        tCard.setValue(11);
+        /*
+        plArr.keepCard(tCard, pNumber);
+
+        Card result= pl.getHand().get(4);
+        assertEquals(11, result);
+         */
     }
 
     @Test
@@ -174,11 +185,11 @@ public class PlayerTest {
     }
 
     @Test
-    public void testViewArray() {
+    public void testStrategy() {
     }
 
     @Test
-    public void testStrategy() {
+    public void testViewArray() {
     }
 
     @Test
