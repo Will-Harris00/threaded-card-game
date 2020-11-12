@@ -181,6 +181,13 @@ public class PlayerTest {
 
     @Test
     public void testRemove() {
+        int pNumber = 3;
+        Card tCard = plArr[pNumber-1].getHandCard(0);
+
+        pl.removeCard(tCard, pNumber, plArr);
+
+        int result = plArr[pNumber-1].getHandSize();
+        assertEquals(3, result);
     }
 
     @Test

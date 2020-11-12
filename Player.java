@@ -99,7 +99,7 @@ public class Player extends Thread {
      * @param unwantedCard The card to discard from the player's hand.
      */
     public synchronized void discardCard(Card unwantedCard) {
-        removeCard(unwantedCard, getPlayer());
+        removeCard(unwantedCard, getPlayer(), CardGame.playerObj);
         StringBuilder writeString = new StringBuilder();
         // Player discards card to the bottom of the deck to their right.
         if (getPlayer() != CardGame.numPlayers) {
@@ -134,9 +134,10 @@ public class Player extends Thread {
      *
      * @param unwantedCard The card to remove from the player's hand.
      * @param pNumber      The player ID by which to identify the player.
+     * @param playerArr    The array list containing all player objects
      */
-    public synchronized void removeCard(Card unwantedCard, int pNumber) {
-        CardGame.playerObj[pNumber - 1].remFromHand(hand.indexOf(unwantedCard));
+    public synchronized void removeCard(Card unwantedCard, int pNumber, Player[] playerArr) {
+        playerArr[pNumber - 1].remFromHand(hand.indexOf(unwantedCard));
     }
 
     /**
