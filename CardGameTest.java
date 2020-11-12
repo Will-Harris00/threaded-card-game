@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -17,14 +18,21 @@ import static org.junit.Assert.*;
  * @version 1.0
  */
 public class CardGameTest {
-    private ArrayList<Integer> importedPack;
+    private ArrayList<Integer> createdPack;
 
     @Before
     public void setUp() {
+        createdPack = new ArrayList<Integer>();
+        for (int i = 0; i < 16; i++) {
+            createdPack.add(2);
+        }
+        System.out.println(createdPack.size());
     }
+
 
     @After
     public void tearDown() {
+        createdPack = null;
     }
 
     @Test
@@ -100,7 +108,7 @@ public class CardGameTest {
         String input = "testCardPack.txt";
         Scanner inputPack = new Scanner(input);
         BufferedReader in = CardGame.validatePackInput(inputPack);
-        importedPack = CardGame.importPack(in, 3);
+        ArrayList<Integer> importedPack = CardGame.importPack(in, 3);
         boolean notIdentical = false;
         if(importedPack.size() != 24) { notIdentical = true; }
         for (Integer i : importedPack) {
@@ -114,19 +122,19 @@ public class CardGameTest {
 
     @Test
     public void testDealCards() throws IOException {
+
     }
 
     @Test
     public void testGenHashMap() {
+        Map<Integer, Integer> dict = CardGame.genHashMap(createdPack);
+        int frequency = dict.get(2);
+        assertEquals(16, frequency);
     }
 
     @Test
-    public void testCountFrequencies() throws IOException {
-        String input = "testCardPack.txt";
-        Scanner inputPack = new Scanner(input);
-        BufferedReader in = CardGame.validatePackInput(inputPack);
-        importedPack = CardGame.importPack(in, 3);
-        boolean playGame = CardGame.countFrequencies(importedPack, 3);
+    public void testCountFrequencies() {
+        boolean playGame = CardGame.countFrequencies(createdPack, 2);
         assertTrue(playGame);
     }
 }
