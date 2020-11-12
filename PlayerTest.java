@@ -158,17 +158,6 @@ public class PlayerTest {
         assertTrue(correctDiscard);
     }
 
-    /*
-    // Tests that the card a player draws from the top of the deck to their left matches a known value.
-    @Test
-    public void testDrawCard() {
-        int pNumber = 1;
-        dkArray[pNumber - 1].getDeckCard(0).setValue(18);
-        int result = plArray[pNumber - 1].drawCard(pNumber, dkArray).getValue();
-        assertEquals(18, result);
-    }
-    */
-
     // Tests that the discarded card is transferred from one player's hand to the top of the deck of the player on
     // the right.
     @Test
