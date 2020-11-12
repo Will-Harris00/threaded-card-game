@@ -2,11 +2,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
  *
  * @author 014485
  * @author 054530
- * @version 1.0
+ * @version 1.1
  */
 public class CardGameTest {
     private ArrayList<Integer> createdPack;
@@ -116,14 +117,18 @@ public class CardGameTest {
     }
 
     // Tests validatePackInput method with an invalid non-existing file name.
-    @Test()
-    //expected = FileNotFoundException.class
+    @Test(expected = FileNotFoundException.class)
     public void testValidatePackInput_IllegalFileName() {
         Scanner inputPack = new Scanner("invalid");
         CardGame.validatePackInput(inputPack);
         fail("FileNotFoundException should have been thrown.");
     }
 
+    /**
+     * Tests importPack method by comparing number of lines and contents after file has been parsed by game.
+     *
+     * @throws IOException When the card pack file does not exist.
+     */
     @Test
     public void testImportPack() throws IOException {
         String input = "testCardPack.txt";
@@ -131,14 +136,16 @@ public class CardGameTest {
         BufferedReader in = CardGame.validatePackInput(inputPack);
         ArrayList<Integer> importedPack = CardGame.importPack(in, 3);
         boolean notIdentical = false;
-        if(importedPack.size() != 24) { notIdentical = true; }
+        if (importedPack.size() != 24) {
+            notIdentical = true;
+        }
         for (Integer i : importedPack) {
             if (i != 4) {
                 notIdentical = true;
                 break;
             }
         }
-        assertEquals(notIdentical, false);
+        assertFalse(notIdentical);
     }
 
     @Test
@@ -155,6 +162,8 @@ public class CardGameTest {
         assertTrue(evenlyDistributed);
     }
 
+    // Tests genHashMap by inputting a test card pack consisting only of values 2, and then checking the generated
+    // dictionary for the frequency of value 2, which should be 2 * 8 = 16.
     @Test
     public void testGenHashMap() {
         Map<Integer, Integer> dict = CardGame.genHashMap(createdPack);
@@ -162,6 +171,11 @@ public class CardGameTest {
         assertEquals(16, frequency);
     }
 
+    /**
+     * Tests countFrequencies method by inputting a test card pack consisting only of values 2, then counting the
+     * frequencies of the pack for a two-player game, and testing whether the game continues, stating that there is
+     * guaranteed to be a winner.
+     */
     @Test
     public void testCountFrequencies() {
         boolean playGame = CardGame.countFrequencies(createdPack, 2);
