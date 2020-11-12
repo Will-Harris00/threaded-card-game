@@ -241,7 +241,7 @@ public class PlayerTest {
     // Adds four cards of value 2 to player2's hand, and checks if player2 has a winning hand afterwards, and is
     // declared as the winner.
     @Test
-    public void isWinner() {
+    public void testIsWinner() {
         int pNumber = 2;
         complete = new AtomicBoolean(false);
         winner = new AtomicInteger(0);
