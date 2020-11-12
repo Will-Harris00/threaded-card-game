@@ -1,6 +1,11 @@
 # Threaded-Card-Game
 
 ## Running the Game
+
+### Prerequisites
+This game has been designed for and developed on Java 14.0.2.
+
+### Player Inputs 
 At the start of the game, the user will be prompted for the number of
 players in the game. This input should be provided as a positive integer
 which is greater than 1. Examples of valid inputs would be:
