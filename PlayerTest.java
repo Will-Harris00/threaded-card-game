@@ -5,69 +5,70 @@ import org.junit.Test;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-    private Player[] plArr;
-    private CardDeck[] dkArr;
-    private Player pl;
-    private CardDeck dk;
+    private Player[] plArray;
+    private CardDeck[] dkArray;
+    private Player plObject;
+    private CardDeck dkObject;
     AtomicBoolean complete;
     AtomicInteger winner;
 
+    // Creates mock objects for player1, card with value 5, and player1's hand to 5, 5, 5, 5.
     @Before
     public void playerSetUp() {
-        pl = new Player(1);
+        plObject = new Player(1);
         // set up a target test hand
         Card n = new Card();
         n.setValue(5);
         for (int i = 0; i < 4; i ++) {
-            pl.getHand().add(n);
+            plObject.getHand().add(n);
         }
     }
 
+    // Creates mock objects for deck1, card with value 8, and deck1's deck to 8, 8, 8, 8.
     @Before
     public void deckSetUp() {
-        dk = new CardDeck(1);
+        dkObject = new CardDeck(1);
         // set up a target test deck
         Card m = new Card();
         m.setValue(8);
         for (int i = 0; i < 4; i ++) {
-            dk.getDeck().add(m);
+            dkObject.getDeck().add(m);
         }
     }
 
+    // Creates mock object for a player, and then assigns three duplicate players to the player array.
     @Before
     public void playerArrSetUp() {
-        // create an array of length one containing a three player objects
-        plArr = new Player[3];
-        // add the player to the player array
+        plArray = new Player[3];
+        // Adds the player to the player array.
         for (int i = 0; i < 3; i++) {
-            plArr[i] = pl;
+            plArray[i] = plObject;
         }
     }
 
+    // Creates mock object for a deck, and then assigns three duplicate decks to the deck array.
     @Before
     public void deckArrSetUp() {
-        // create an array of length one containing a three deck object
-        dkArr = new CardDeck[3];
-        // add the deck to the deck array
+        dkArray = new CardDeck[3];
         for (int i = 0; i < 3; i++) {
-            dkArr[i] = dk;
+            dkArray[i] = dkObject;
         }
     }
 
     @After
     public void tearDown () {
-        pl = null;
-        dk = null;
-        plArr = null;
-        dkArr = null;
+        plObject = null;
+        dkObject = null;
+        plArray = null;
+        dkArray = null;
     }
 
     @Test
     public void testGetHandCard() {
-        assertEquals(5, pl.getHandCard(0).getValue());
+        assertEquals(5, plObject.getHandCard(0).getValue());
     }
 
     @Test
@@ -76,8 +77,8 @@ public class PlayerTest {
 
     @Test
     public void testGetHandSize() {
-        int expected = pl.getHand().size();
-        assertEquals(expected, pl.getHandSize());
+        int expected = plObject.getHand().size();
+        assertEquals(expected, plObject.getHandSize());
     }
 
     @Test
@@ -88,17 +89,17 @@ public class PlayerTest {
     public void testAddToHand() {
         Card n = new Card();
         n.setValue(7);
-        pl.getHand().add(n);
-        int expected = pl.getHand().get(4).getValue();
+        plObject.getHand().add(n);
+        int expected = plObject.getHand().get(4).getValue();
         int result = n.getValue();
-        assertEquals(5, pl.getHandSize());
+        assertEquals(5, plObject.getHandSize());
         assertEquals(expected, result);
     }
 
     @Test
     public void testRemFromHand() {
-        pl.remFromHand(0);
-        assertEquals(3, pl.getHandSize());
+        plObject.remFromHand(0);
+        assertEquals(3, plObject.getHandSize());
     }
 
     @Test
@@ -173,9 +174,9 @@ public class PlayerTest {
         Card tCard = new Card();
         tCard.setValue(11);
 
-        pl.discardCard(tCard, pNumber, plArr, dkArr, 3);
+        plObject.discardCard(tCard, pNumber, plArray, dkArray, 3);
 
-        Card result = pl.getHand().get(4);
+        Card result = plObject.getHand().get(4);
         assertEquals(tCard, result);
     }
 
@@ -185,20 +186,20 @@ public class PlayerTest {
         Card tCard = new Card();
         tCard.setValue(11);
 
-        pl.keepCard(tCard, pNumber, plArr);
+        plObject.keepCard(tCard, pNumber, plArray);
 
-        Card result = pl.getHand().get(4);
+        Card result = plObject.getHand().get(4);
         assertEquals(tCard, result);
     }
 
     @Test
     public void testRemoveCard() {
         int pNumber = 3;
-        Card tCard = plArr[pNumber-1].getHandCard(0);
+        Card tCard = plArray[pNumber - 1].getHandCard(0);
 
-        pl.removeCard(tCard, pNumber, plArr);
+        plObject.removeCard(tCard, pNumber, plArray);
 
-        int result = plArr[pNumber-1].getHandSize();
+        int result = plArray[pNumber - 1].getHandSize();
         assertEquals(3, result);
     }
 
