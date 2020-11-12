@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PlayerTest {
     private Player[] plArray;
@@ -135,6 +136,10 @@ public class PlayerTest {
     }
 
     @Test
+    public void testDrawCard() {
+    }
+
+    @Test
     public void testChooseDiscard() {
         int pNumber = 2;
         Player tPlayer = new Player(pNumber);
@@ -164,8 +169,7 @@ public class PlayerTest {
                 break;
             }
         }
-
-        assertEquals(true, correctDiscard);
+        assertTrue(correctDiscard);
     }
 
     @Test
@@ -185,7 +189,6 @@ public class PlayerTest {
         result = unwantedCard.getValue();
         plObject.discardCard(unwantedCard, pNumber, plArray, dkArray, 3);
         assertEquals(17, result);
-
     }
 
     @Test
@@ -217,6 +220,7 @@ public class PlayerTest {
 
     @Test
     public void testViewArray() {
+
     }
 
     @Test

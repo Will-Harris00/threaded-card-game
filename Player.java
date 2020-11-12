@@ -74,17 +74,19 @@ public class Player extends Thread {
     /**
      * Method which draws a card from the player's deck.
      *
+     * @param playerNum The player ID by which to identify the player.
+     * @param deckArr   The array list containing all deck objects.
      * @return The card from the player's deck.
      */
-    public synchronized Card drawCard() {
+    public synchronized Card drawCard(int playerNum, CardDeck[] deckArr) {
         // Player picks a card from the top of the deck to their left.
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue()).append(" from deck ")
-                .append(getPlayer());
+        writeString.append("player ").append(playerNum).append(" draws a ").append(drawValue()).append(" from deck ")
+                .append(playerNum);
 
-        Card card = CardGame.deckObj[getPlayer() - 1].getDeckCard(0);
+        Card card = deckArr[playerNum - 1].getDeckCard(0);
 
-        CardGame.deckObj[getPlayer() - 1].remFromDeck(0);
+        deckArr[playerNum - 1].remFromDeck(0);
 
         System.out.println(writeString.toString().trim());
         writeToFile("player", writeString.toString().trim());
@@ -177,6 +179,7 @@ public class Player extends Thread {
      * @param card         The card drawn by the player.
      * @param playerNum    The player ID by which to identify the player.
      * @param playerArr    The array list containing all player objects.
+     * @param deckArr      The array list containing all deck objects.
      * @param totalPlayers The number of players playing the game.
      */
     public synchronized void strategy(Card card, int playerNum, Player[] playerArr,
@@ -253,7 +256,7 @@ public class Player extends Thread {
         while (!CardGame.complete.get()) {
             if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
                 synchronized (this) {
-                    Card card = drawCard();
+                    Card card = drawCard(CardGame.numPlayers, CardGame.deckObj);
 
                     strategy(card, getPlayer(), CardGame.playerObj, CardGame.deckObj, CardGame.numPlayers);
                     // Writes current hand to player output file.
