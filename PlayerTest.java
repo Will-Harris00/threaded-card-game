@@ -169,14 +169,22 @@ public class PlayerTest {
 
     @Test
     public void testDiscardCard() {
+        // tests if statement within discardCard method
         int pNumber = 2;
-        Card tCard = new Card();
-        tCard.setValue(11);
+        plArr[pNumber - 1].getHandCard(0).setValue(15);
+        Card unwantedCard = plArr[pNumber - 1].getHandCard(0);
+        int result = unwantedCard.getValue();
+        pl.discardCard(unwantedCard, pNumber, plArr, dkArr, 3);
+        assertEquals(15, result);
 
-        pl.discardCard(tCard, pNumber, plArr, dkArr, 3);
+        // tests else statement for discard to deck zero within discardCard method
+        pNumber = 3;
+        plArr[pNumber - 1].getHandCard(0).setValue(17);
+        unwantedCard = plArr[pNumber - 1].getHandCard(0);
+        result = unwantedCard.getValue();
+        pl.discardCard(unwantedCard, pNumber, plArr, dkArr, 3);
+        assertEquals(17, result);
 
-        Card result = pl.getHand().get(4);
-        assertEquals(tCard, result);
     }
 
     @Test
