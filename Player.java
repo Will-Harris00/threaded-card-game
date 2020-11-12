@@ -66,33 +66,25 @@ public class Player extends Thread {
         this.hand.remove(index);
     }
 
-    /**
-     * Returns the value of the card which the player has most recently picked up.
-     *
-     * @param playerNum The player ID by which to identify the player.
-     * @param deckArr   The array list containing all deck objects.
-     * @return The value of the card most recently picked-up.
-     */
-    public int drawValue(int playerNum, CardDeck[] deckArr) {
-        return deckArr[playerNum - 1].getDeckCard(0).getValue();
+    // Returns the value of the card which the player has most recently picked up.
+    public int drawValue() {
+        return CardGame.deckObj[pNumber - 1].getDeckCard(0).getValue();
     }
 
     /**
      * Method which draws a card from the player's deck.
      *
-     * @param playerNum The player ID by which to identify the player.
-     * @param deckArr   The array list containing all deck objects.
      * @return The card from the player's deck.
      */
-    public synchronized Card drawCard(int playerNum, CardDeck[] deckArr) {
+    public synchronized Card drawCard() {
         // Player picks a card from the top of the deck to their left.
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player ").append(playerNum).append(" draws a ").append(drawValue(playerNum, deckArr)).append(" from deck ")
-                .append(playerNum);
+        writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue()).append(" from deck ")
+                .append(getPlayer());
 
-        Card card = deckArr[playerNum - 1].getDeckCard(0);
+        Card card = CardGame.deckObj[getPlayer() - 1].getDeckCard(0);
 
-        deckArr[playerNum - 1].remFromDeck(0);
+        CardGame.deckObj[getPlayer() - 1].remFromDeck(0);
 
         System.out.println(writeString.toString().trim());
         writeToFile("player", writeString.toString().trim());
@@ -185,7 +177,6 @@ public class Player extends Thread {
      * @param card         The card drawn by the player.
      * @param playerNum    The player ID by which to identify the player.
      * @param playerArr    The array list containing all player objects.
-     * @param deckArr      The array list containing all deck objects.
      * @param totalPlayers The number of players playing the game.
      */
     public synchronized void strategy(Card card, int playerNum, Player[] playerArr,
@@ -262,7 +253,7 @@ public class Player extends Thread {
         while (!CardGame.complete.get()) {
             if (CardGame.deckObj[getPlayer() - 1].getDeck().size() != 0) {
                 synchronized (this) {
-                    Card card = drawCard(CardGame.numPlayers, CardGame.deckObj);
+                    Card card = drawCard();
 
                     strategy(card, getPlayer(), CardGame.playerObj, CardGame.deckObj, CardGame.numPlayers);
                     // Writes current hand to player output file.
