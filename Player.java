@@ -121,11 +121,12 @@ public class Player extends Thread {
     /**
      * Method which keeps the card drawn by the player and adds it to their hand.
      *
-     * @param card    The card drawn by the player.
-     * @param pNumber The player ID by which to identify the player.
+     * @param card      The card drawn by the player.
+     * @param pNumber   The player ID by which to identify the player.
+     * @param playerArr The array list containing all player objects
      */
-    public void keepCard(Card card, int pNumber) {
-        CardGame.playerObj[pNumber - 1].addToHand(card);
+    public void keepCard(Card card, int pNumber, Player[] playerArr) {
+        playerArr[pNumber - 1].addToHand(card);
     }
 
     /**
@@ -174,7 +175,7 @@ public class Player extends Thread {
     public synchronized void strategy(Card card) {
         synchronized (this) {
             // Keep every card that it picks up.
-            keepCard(card, getPlayer());
+            keepCard(card, getPlayer(), CardGame.playerObj);
 
             int index = chooseDiscard();
 

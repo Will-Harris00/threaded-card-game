@@ -172,12 +172,11 @@ public class PlayerTest {
         int pNumber = 2;
         Card tCard = new Card();
         tCard.setValue(11);
-        /*
-        plArr.keepCard(tCard, pNumber);
 
-        Card result= pl.getHand().get(4);
-        assertEquals(11, result);
-         */
+        pl.keepCard(tCard, pNumber, plArr);
+
+        Card result = pl.getHand().get(4);
+        assertEquals(tCard, result);
     }
 
     @Test
