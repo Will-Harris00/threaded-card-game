@@ -125,26 +125,6 @@ public class PlayerTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void testDraw() {
-        CardDeck tDeck = new CardDeck(1);
-        Card expected = null;
-        Card tCard = new Card();
-        for (int i = 1; i <= 4; i++) {
-            tCard.setValue(i);
-            tDeck.addToDeck(tCard);
-            if (i == 1) {
-                expected = tCard;
-            }
-        }
-        Card result = tDeck.getDeck().get(0);
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void testDrawCard() {
-    }
-
     // Creates a hand with three preferred values and one non-preferred value, and checks that the non-preferred
     // value is the one which is discarded.
     @Test
@@ -176,6 +156,15 @@ public class PlayerTest {
             }
         }
         assertTrue(correctDiscard);
+    }
+
+    // Tests that the card a player draws from the top of the deck to their left matches a known value.
+    @Test
+    public void testDrawCard() {
+        int pNumber = 1;
+        dkArray[pNumber - 1].getDeckCard(0).setValue(18);
+        int result = plArray[pNumber - 1].drawCard(pNumber, dkArray).getValue();
+        assertEquals(18, result);
     }
 
     // Tests that the discarded card is transferred from one player's hand to the top of the deck of the player on

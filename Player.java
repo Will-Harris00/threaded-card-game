@@ -66,9 +66,15 @@ public class Player extends Thread {
         this.hand.remove(index);
     }
 
-    // Returns the value of the card which the player has most recently picked up.
-    public int drawValue() {
-        return CardGame.deckObj[pNumber - 1].getDeckCard(0).getValue();
+    /**
+     * Returns the value of the card which the player has most recently picked up.
+     *
+     * @param playerNum The player ID by which to identify the player.
+     * @param deckArr   The array list containing all deck objects.
+     * @return The value of the card most recently picked-up.
+     */
+    public int drawValue(int playerNum, CardDeck[] deckArr) {
+        return deckArr[playerNum - 1].getDeckCard(0).getValue();
     }
 
     /**
@@ -81,7 +87,7 @@ public class Player extends Thread {
     public synchronized Card drawCard(int playerNum, CardDeck[] deckArr) {
         // Player picks a card from the top of the deck to their left.
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player ").append(playerNum).append(" draws a ").append(drawValue()).append(" from deck ")
+        writeString.append("player ").append(playerNum).append(" draws a ").append(drawValue(playerNum, deckArr)).append(" from deck ")
                 .append(playerNum);
 
         Card card = deckArr[playerNum - 1].getDeckCard(0);
