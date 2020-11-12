@@ -2,8 +2,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
@@ -92,7 +94,20 @@ public class CardGameTest {
     }
 
     @Test
-    public void testImportPack() {
+    public void testImportPack() throws IOException {
+        String input = "testCardPack.txt";
+        Scanner inputPack = new Scanner(input);
+        BufferedReader in = CardGame.validatePackInput(inputPack);
+        ArrayList<Integer> loadedIntegerPack = CardGame.importPack(in, 3);
+        boolean notIdentical = false;
+        if(loadedIntegerPack.size() != 24) { notIdentical = true; }
+        for (Integer i : loadedIntegerPack) {
+            if (i != 4) {
+                notIdentical = true;
+                break;
+            }
+        }
+        assertEquals(notIdentical, false);
     }
 
     @Test
