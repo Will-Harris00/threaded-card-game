@@ -134,7 +134,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testDiscard() {
+    public void testChooseDiscard() {
         int pNumber = 2;
         Player tPlayer = new Player(pNumber);
         // single non-preferred card and three preferred in player hand
@@ -168,7 +168,19 @@ public class PlayerTest {
     }
 
     @Test
-    public void testKeep() {
+    public void testDiscardCard() {
+        int pNumber = 2;
+        Card tCard = new Card();
+        tCard.setValue(11);
+
+        pl.discardCard(tCard, pNumber, plArr, dkArr, 3);
+
+        Card result = pl.getHand().get(4);
+        assertEquals(tCard, result);
+    }
+
+    @Test
+    public void testKeepCard() {
         int pNumber = 2;
         Card tCard = new Card();
         tCard.setValue(11);
@@ -180,7 +192,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testRemove() {
+    public void testRemoveCard() {
         int pNumber = 3;
         Card tCard = plArr[pNumber-1].getHandCard(0);
 
