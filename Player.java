@@ -173,16 +173,20 @@ public class Player extends Thread {
         synchronized (this) {
             // Keep every card that it picks up.
             keep(card);
-
-            int index = chooseDiscard();
-
-            discard(hand.get(index));
+            // Discards a card with non-preferred value from existing hand (excluding new card) randomly.
+            discard(hand.get(chooseDiscard()));
         }
     }
 
+    /**
+     * Randomly chooses the index of the card in the hand to be discarded.
+     *
+     * @return Index of the card in the hand to be discarded.
+     */
     public synchronized int chooseDiscard() {
         boolean doneDiscard = false;
         Random rand = new Random();
+        // Initialises index to an invalid index to force random index to be generated.
         int index = -2;
 
         while (!doneDiscard) {
