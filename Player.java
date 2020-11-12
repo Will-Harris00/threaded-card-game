@@ -98,8 +98,8 @@ public class Player extends Thread {
      *
      * @param unwantedCard The card to discard from the player's hand.
      */
-    public synchronized void discard(Card unwantedCard) {
-        remove(unwantedCard);
+    public synchronized void discardCard(Card unwantedCard) {
+        removeCard(unwantedCard, getPlayer(), CardGame.playerObj);
         StringBuilder writeString = new StringBuilder();
         // Player discards card to the bottom of the deck to their right.
         if (getPlayer() != CardGame.numPlayers) {
@@ -121,19 +121,23 @@ public class Player extends Thread {
     /**
      * Method which keeps the card drawn by the player and adds it to their hand.
      *
-     * @param card The card drawn by the player.
+     * @param card      The card drawn by the player.
+     * @param pNumber   The player ID by which to identify the player.
+     * @param playerArr The array list containing all player objects
      */
-    public void keep(Card card) {
-        CardGame.playerObj[getPlayer() - 1].addToHand(card);
+    public void keepCard(Card card, int pNumber, Player[] playerArr) {
+        playerArr[pNumber - 1].addToHand(card);
     }
 
     /**
      * Method which removes the card from the player's hand.
      *
      * @param unwantedCard The card to remove from the player's hand.
+     * @param pNumber      The player ID by which to identify the player.
+     * @param playerArr    The array list containing all player objects
      */
-    public synchronized void remove(Card unwantedCard) {
-        CardGame.playerObj[getPlayer() - 1].remFromHand(hand.indexOf(unwantedCard));
+    public synchronized void removeCard(Card unwantedCard, int pNumber, Player[] playerArr) {
+        playerArr[pNumber - 1].remFromHand(hand.indexOf(unwantedCard));
     }
 
     /**
@@ -172,6 +176,11 @@ public class Player extends Thread {
     public synchronized void strategy(Card card) {
         synchronized (this) {
             // Keep every card that it picks up.
+            keepCard(card, getPlayer(), CardGame.playerObj);
+
+            int index = chooseDiscard();
+
+            discardCard(hand.get(index));
             keep(card);
             // Discards a card with non-preferred value from existing hand (excluding new card) randomly.
             discard(hand.get(chooseDiscard()));

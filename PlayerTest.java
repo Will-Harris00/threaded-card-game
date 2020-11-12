@@ -2,8 +2,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -41,18 +39,22 @@ public class PlayerTest {
 
     @Before
     public void playerArrSetUp() {
-        // create an array of length one containing a single player object
-        plArr = new Player[1];
+        // create an array of length one containing a three player objects
+        plArr = new Player[3];
         // add the player to the player array
-        plArr[0] = pl;
+        for (int i = 0; i < 3; i++) {
+            plArr[i] = pl;
+        }
     }
 
     @Before
     public void deckArrSetUp() {
-        // create an array of length one containing a single deck object
-        plArr = new Player[1];
+        // create an array of length one containing a three deck object
+        dkArr = new CardDeck[3];
         // add the deck to the deck array
-        plArr[0] = pl;
+        for (int i = 0; i < 3; i++) {
+            dkArr[i] = dk;
+        }
     }
 
     @After
@@ -167,18 +169,33 @@ public class PlayerTest {
 
     @Test
     public void testKeep() {
+        int pNumber = 2;
+        Card tCard = new Card();
+        tCard.setValue(11);
+
+        pl.keepCard(tCard, pNumber, plArr);
+
+        Card result = pl.getHand().get(4);
+        assertEquals(tCard, result);
     }
 
     @Test
     public void testRemove() {
-    }
+        int pNumber = 3;
+        Card tCard = plArr[pNumber-1].getHandCard(0);
 
-    @Test
-    public void testViewArray() {
+        pl.removeCard(tCard, pNumber, plArr);
+
+        int result = plArr[pNumber-1].getHandSize();
+        assertEquals(3, result);
     }
 
     @Test
     public void testStrategy() {
+    }
+
+    @Test
+    public void testViewArray() {
     }
 
     @Test
