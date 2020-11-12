@@ -19,9 +19,27 @@ import static org.junit.Assert.*;
  */
 public class CardGameTest {
     private ArrayList<Integer> createdPack;
+    private Player[] plArray;
+    private CardDeck[] dkArray;
+    private Player plObject;
+    private CardDeck dkObject;
+
+    // Creates mock object for a player, and then assigns three duplicate players to the player array.
+    @Before
+    public void objectArrSetUp() {
+        plArray = new Player[2];
+        dkArray = new CardDeck[2];
+        plObject = new Player(1);
+        dkObject = new CardDeck(1);
+        // Adds the player to the player array.
+        for (int i = 0; i < 2; i++) {
+            plArray[i] = plObject;
+            dkArray[i] = dkObject;
+        }
+    }
 
     @Before
-    public void setUp() {
+    public void cardPackSetUp() {
         createdPack = new ArrayList<Integer>();
         for (int i = 0; i < 16; i++) {
             createdPack.add(2);
@@ -30,9 +48,12 @@ public class CardGameTest {
     }
 
 
+    // Removes mock objects after tests to save memory by triggering automatic garbage collection.
     @After
     public void tearDown() {
         createdPack = null;
+        plArray = null;
+        dkArray = null;
     }
 
     @Test
@@ -121,8 +142,17 @@ public class CardGameTest {
     }
 
     @Test
-    public void testDealCards() throws IOException {
+    public void testDealCards() {
+        boolean evenlyDistributed = true;
+        CardGame.dealCards(createdPack, 2, plArray, dkArray);
 
+        for (Player p : plArray) {
+            if (p.getHandSize() != 4) {
+                evenlyDistributed = false;
+                break;
+            }
+        }
+        assertTrue(evenlyDistributed);
     }
 
     @Test
