@@ -1,11 +1,11 @@
-# Threaded-Card-Game
+# Threaded-src.Card-Game
 
 ## Running the Game
 
 ### Prerequisites
 This game has been designed for and developed on Java 14.0.2.
 
-### Player Inputs 
+### src.Player Inputs 
 At the start of the game, the user will be prompted for the number of
 players in the game. This input should be provided as a positive integer
 which is greater than 1. Examples of valid inputs would be:
@@ -14,7 +14,7 @@ which is greater than 1. Examples of valid inputs would be:
 - 20
 
 (NB: You should have a valid card pack for the number of players you
-choose. Card packs must have the number of players multiplied by 8,
+choose. src.Card packs must have the number of players multiplied by 8,
 because each player will have a deck of four cards and a hand of four
 cards in the game. For example, a pack for 4 players must include
 4 * 8 = 32 cards.)
@@ -35,5 +35,5 @@ example, you may input:
 All tests in the test suites provided use JUnit 4.12.
 
 ### Using the Test Suite
-By running the test suite, TestSuite.java, all tests for CardGame.java
-and Player.java.can be run at once.
+By running the test suite, src.TestSuite.java, all tests for src.CardGame.java
+and src.Player.java.can be run at once.

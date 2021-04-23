@@ -1,3 +1,5 @@
+package src;
+
 /**
  * IllegalNumberPlayerSize exception to be thrown when an input is given which can be parsed as an integer, but is
  * not greater than 1.

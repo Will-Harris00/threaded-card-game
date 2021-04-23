@@ -1,3 +1,5 @@
+package src;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -50,7 +52,7 @@ public class CardGame {
             deckObj[p] = new CardDeck(p + 1);
         }
 
-        System.out.println("\nCard Pack: " + packArr.toString());
+        System.out.println("\nsrc.Card Pack: " + packArr.toString());
         dealCards(packArr, numPlayers, playerObj, deckObj);
         complete = new AtomicBoolean(false);
         winner = new AtomicInteger(0);
@@ -167,13 +169,13 @@ public class CardGame {
                 c.setValue(packArr.get(i));
                 playerObj[j].addToHand(c);
                 System.out.println("\nHand Size: " + playerObj[j].getHandSize());
-                System.out.println("Player: " + (j + 1));
+                System.out.println("src.Player: " + (j + 1));
                 if (j < numPlayers - 1) {
                     j++;
                 } else {
                     j = 0;
                 }
-                System.out.println("Assigned Card: " + packArr.get(i));
+                System.out.println("Assigned src.Card: " + packArr.get(i));
                 i++;
             }
 
@@ -188,7 +190,7 @@ public class CardGame {
             } else {
                 j = 0;
             }
-            System.out.println("Assigned Card: " + packArr.get(i));
+            System.out.println("Assigned src.Card: " + packArr.get(i));
             i++;
         }
     }
@@ -238,14 +240,14 @@ public class CardGame {
         for (int p = 1; p < numPlayers + 1; p++) {
             try {
                 if (dict.get(p) >= 4) {
-                    System.out.println("\nPlayer " + p + " could collect a winning hand.");
+                    System.out.println("\nsrc.Player " + p + " could collect a winning hand.");
                     playGame = true;
                 } else {
-                    System.out.println("\nPlayer " + p + " is at a disadvantage as there are\nfewer than four of" +
+                    System.out.println("\nsrc.Player " + p + " is at a disadvantage as there are\nfewer than four of" +
                             "their preferred cards.");
                 }
             } catch (NullPointerException e) {
-                System.out.println("\nPlayer " + p + " has no preferred cards in pack.");
+                System.out.println("\nsrc.Player " + p + " has no preferred cards in pack.");
             }
         }
 

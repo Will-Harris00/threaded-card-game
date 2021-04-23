@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Handles the creation and checking of card objects.
  *

@@ -1,3 +1,5 @@
+package src;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +14,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 /**
- * Tests the CardGame class through smaller unit tests which can be performed quickly.
+ * Tests the src.CardGame class through smaller unit tests which can be performed quickly.
  *
  * @author 014485
  * @author 054530
@@ -82,7 +84,7 @@ public class CardGameTest {
         try {
             Scanner inputPlayersString = new Scanner("1");
             CardGame.validateNumPlayersInput(inputPlayersString);
-            fail("Should have thrown IllegalNumPlayersSizeException.");
+            fail("Should have thrown src.IllegalNumPlayersSizeException.");
         } catch (IllegalNumPlayersSizeException e) {
             assertTrue(true);
         }
@@ -95,7 +97,7 @@ public class CardGameTest {
         try {
             Scanner inputPlayersString = new Scanner("-1");
             CardGame.validateNumPlayersInput(inputPlayersString);
-            fail("Should have thrown IllegalNumPlayersSizeException.");
+            fail("Should have thrown src.IllegalNumPlayersSizeException.");
         } catch (IllegalNumPlayersSizeException e) {
             assertTrue(true);
         }
