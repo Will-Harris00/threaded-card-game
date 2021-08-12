@@ -33,7 +33,7 @@ public class PlayerTest {
     // Creates mock objects for deck1, card with value 8, and deck1's deck to 8, 8, 8, 8.
     @Before
     public void deckSetUp() {
-        dkObject = new CardDeck(1);
+        dkObject = new CardDeck();
         // set up a target test deck
         Card m = new Card();
         m.setValue(8);
@@ -113,7 +113,7 @@ public class PlayerTest {
     // Creates deck1, then adds cards with values 1, 2, 3, 4, and checks if the first card in deck has value 1.
     @Test
     public void testDrawValue() {
-        CardDeck tDeck = new CardDeck(1);
+        CardDeck tDeck = new CardDeck();
         int expected = 0;
         for (int i = 1; i <= 4; i++) {
             Card tCard = new Card();

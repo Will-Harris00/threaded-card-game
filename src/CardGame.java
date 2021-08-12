@@ -49,7 +49,7 @@ public class CardGame {
         // Creates and initialises player objects using constructor.
         for (int p = 0; p < numPlayers; p++) {
             playerObj[p] = new Player(p + 1);
-            deckObj[p] = new CardDeck(p + 1);
+            deckObj[p] = new CardDeck();
         }
 
         System.out.println("\nsrc.Card Pack: " + packArr);

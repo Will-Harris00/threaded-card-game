@@ -10,15 +10,12 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class CardDeck {
-    private final int number;
     private final ArrayList<Card> deck = new ArrayList<>();
 
 
     /**
-     * @param number Identifies card decks according to player ID.
      */
-    public CardDeck(int number) {
-        this.number = number;
+    public CardDeck() {
     }
 
 

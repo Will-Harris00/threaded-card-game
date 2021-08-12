@@ -33,7 +33,7 @@ public class CardGameTest {
         plArray = new Player[2];
         dkArray = new CardDeck[2];
         plObject = new Player(1);
-        dkObject = new CardDeck(1);
+        dkObject = new CardDeck();
         // Adds the player to the player array.
         for (int i = 0; i < 2; i++) {
             plArray[i] = plObject;
@@ -43,7 +43,7 @@ public class CardGameTest {
 
     @Before
     public void cardPackSetUp() {
-        createdPack = new ArrayList<Integer>();
+        createdPack = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             createdPack.add(2);
         }
@@ -137,10 +137,7 @@ public class CardGameTest {
         Scanner inputPack = new Scanner(input);
         BufferedReader in = CardGame.validatePackInput(inputPack);
         ArrayList<Integer> importedPack = CardGame.importPack(in, 3);
-        boolean notIdentical = false;
-        if (importedPack.size() != 24) {
-            notIdentical = true;
-        }
+        boolean notIdentical = importedPack.size() != 24;
         for (Integer i : importedPack) {
             if (i != 4) {
                 notIdentical = true;
