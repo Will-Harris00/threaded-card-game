@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Executable multi-threaded card game with n players, each with a deck of cards. Every player holds four cards,
- * with the hands and decks drawn from a pack which contains 8n cards. Each card has a face value of a non-negative
- * integer.
+ * Executable multi-threaded card game with n players, each with a deck of cards. Every player holds
+ * four cards, with the hands and decks drawn from a pack which contains 8n cards. Each card has a
+ * face value of a non-negative integer.
  * <p>
- * Cards are continually drawn and discarded by players sequentially until a player has four cards with the same value
- * in their hand. This player is declared as the winner.
+ * Cards are continually drawn and discarded by players sequentially until a player has four cards
+ * with the same value in their hand. This player is declared as the winner.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.1
  */
 public class CardGame {
@@ -67,15 +67,18 @@ public class CardGame {
      * Method to set up the game for the user according to the number of players.
      *
      * @param inputPlayers The user inputted number of players in the game.
+     *
      * @return The number of players in the game.
      */
-    public static int validateNumPlayersInput(Scanner inputPlayers) throws IllegalNumPlayersSizeException {
+    public static int validateNumPlayersInput(Scanner inputPlayers)
+            throws IllegalNumPlayersSizeException {
         numPlayers = 0;
 
         try {
             numPlayers = Integer.parseInt(inputPlayers.nextLine());
             if (numPlayers < 2) {
-                throw new IllegalNumPlayersSizeException("Input must be a positive integer which is two or more.");
+                throw new IllegalNumPlayersSizeException(
+                        "Input must be a positive integer which is two or more.");
             }
         } catch (NumberFormatException e) {
             System.out.println("Input must be an integer.");
@@ -89,6 +92,7 @@ public class CardGame {
      * Method which validates the input for the file name of the pack of cards.
      *
      * @param inputPack The file name of the pack.
+     *
      * @return The file containing the pack of cards.
      */
     public static BufferedReader validatePackInput(Scanner inputPack) {
@@ -111,10 +115,12 @@ public class CardGame {
      *
      * @param in         The file containing the pack of cards.
      * @param numPlayers The number of players in the game.
+     *
      * @return The array of cards in the pack.
      * @throws IOException Failures to read the given file.
      */
-    public static ArrayList<Integer> importPack(BufferedReader in, int numPlayers) throws IOException {
+    public static ArrayList<Integer> importPack(BufferedReader in, int numPlayers)
+            throws IOException {
         String line;
         ArrayList<Integer> packArr = new ArrayList<>();
         int numLine = 0;
@@ -123,18 +129,21 @@ public class CardGame {
             try {
                 value = Integer.parseInt(line);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid pack - Each line must only contain a positive integer.");
+                System.out
+                        .println("Invalid pack - Each line must only contain a positive integer.");
                 System.exit(1);
             }
             if (value > 0) {
                 packArr.add(value);
             } else {
-                System.out.println("Invalid pack - Each line must only contain a positive integer.");
+                System.out
+                        .println("Invalid pack - Each line must only contain a positive integer.");
                 System.exit(1);
             }
             numLine++;
         }
-        // Both hands and decks will be drawn from a pack which contains 8n cards, where n is number of players.
+        // Both hands and decks will be drawn from a pack which contains 8n cards, where n is
+        // number of players.
         if (numLine != 8 * numPlayers) {
             System.out.println("The number of lines in the pack file should be " + numPlayers * 8);
             System.exit(1);
@@ -159,7 +168,8 @@ public class CardGame {
      * @param playerObj  The list of players, each identified by player IDs.
      * @param deckObj    The list of decks of players, each identified by player IDs.
      */
-    public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj, CardDeck[] deckObj) {
+    public static void dealCards(ArrayList<Integer> packArr, int numPlayers, Player[] playerObj,
+                                 CardDeck[] deckObj) {
         int j = 0;
         int i = 0;
         while (i < packArr.size()) {
@@ -200,6 +210,7 @@ public class CardGame {
      * Method to generate a HashMap of value-frequency pairs of cards in the game.
      *
      * @param packArr The array of cards in the pack.
+     *
      * @return HashMap which shows the frequency of each card value in the game.
      */
     public static Map<Integer, Integer> genHashMap(ArrayList<Integer> packArr) {
@@ -223,11 +234,12 @@ public class CardGame {
 
 
     /**
-     * Method which counts the frequency of each card value in the game to analyse each player's chances of winning
-     * based on the number of cards in the game with their preferred value.
+     * Method which counts the frequency of each card value in the game to analyse each player's
+     * chances of winning based on the number of cards in the game with their preferred value.
      *
      * @param packArr    The array of cards in the pack.
      * @param numPlayers The number of players in the game.
+     *
      * @return Whether the game should continue or not.
      */
     public static boolean countFrequencies(ArrayList<Integer> packArr, int numPlayers) {
@@ -243,7 +255,8 @@ public class CardGame {
                     System.out.println("\nsrc.Player " + p + " could collect a winning hand.");
                     playGame = true;
                 } else {
-                    System.out.println("\nsrc.Player " + p + " is at a disadvantage as there are\nfewer than four of" +
+                    System.out.println("\nsrc.Player " + p +
+                            " is at a disadvantage as there are\nfewer than four of" +
                             "their preferred cards.");
                 }
             } catch (NullPointerException e) {
@@ -259,7 +272,8 @@ public class CardGame {
         } else {
             for (Map.Entry<Integer, Integer> val : dict.entrySet()) {
                 if (val.getValue() >= 4) {
-                    System.out.println("\nThere is the possibility of a winning hand but the game may stagnate.");
+                    System.out.println(
+                            "\nThere is the possibility of a winning hand but the game may stagnate.");
                     playGame = true;
                 }
             }
