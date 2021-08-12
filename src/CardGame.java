@@ -52,7 +52,7 @@ public class CardGame {
             deckObj[p] = new CardDeck(p + 1);
         }
 
-        System.out.println("\nsrc.Card Pack: " + packArr.toString());
+        System.out.println("\nsrc.Card Pack: " + packArr);
         dealCards(packArr, numPlayers, playerObj, deckObj);
         complete = new AtomicBoolean(false);
         winner = new AtomicInteger(0);
