@@ -24,8 +24,6 @@ public class CardGameTest {
     private ArrayList<Integer> createdPack;
     private Player[] plArray;
     private CardDeck[] dkArray;
-    private Player plObject;
-    private CardDeck dkObject;
 
     // Creates mock object for a player, and then assigns three duplicate players to the player
     // array.
@@ -33,8 +31,8 @@ public class CardGameTest {
     public void objectArraySetUp() {
         plArray = new Player[2];
         dkArray = new CardDeck[2];
-        plObject = new Player(1);
-        dkObject = new CardDeck();
+        Player plObject = new Player(1);
+        CardDeck dkObject = new CardDeck();
         // Adds the player to the player array.
         for (int i = 0; i < 2; i++) {
             plArray[i] = plObject;
