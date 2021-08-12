@@ -4,8 +4,8 @@ package src;
  * IllegalNumberPlayerSize exception to be thrown when an input is given which can be parsed as an
  * integer, but is not greater than 1.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.0
  */
 public class IllegalNumPlayersSizeException extends Exception {

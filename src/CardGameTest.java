@@ -16,8 +16,8 @@ import static org.junit.Assert.*;
 /**
  * Tests the src.CardGame class through smaller unit tests which can be performed quickly.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.1
  */
 public class CardGameTest {

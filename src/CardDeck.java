@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * Handles changes to the decks of cards as the game progresses.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.0
  */
 public class CardDeck {

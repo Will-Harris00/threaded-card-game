@@ -3,8 +3,8 @@ package src;
 /**
  * Handles the creation and checking of card objects.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.0
  */
 

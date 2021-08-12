@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Manages actions of the players in the game.
  *
- * @author 014485
- * @author 054530
+ * @author Isaac Cheng
+ * @author William Harris
  * @version 1.1
  */
 public class Player extends Thread {
