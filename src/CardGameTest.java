@@ -27,7 +27,8 @@ public class CardGameTest {
     private Player plObject;
     private CardDeck dkObject;
 
-    // Creates mock object for a player, and then assigns three duplicate players to the player array.
+    // Creates mock object for a player, and then assigns three duplicate players to the player
+    // array.
     @Before
     public void objectArrSetUp() {
         plArray = new Player[2];
@@ -64,12 +65,14 @@ public class CardGameTest {
     }
 
     /**
-     * Tests validateNumPlayersInput method with a valid input of a positive integer greater than 1.
+     * Tests validateNumPlayersInput method with a valid input of a positive integer greater than
+     * 1.
      *
      * @throws NumberFormatException When an input which cannot be parsed as an integer is entered.
      */
     @Test
-    public void testValidateNumPlayersInput() throws NumberFormatException, IllegalNumPlayersSizeException {
+    public void testValidateNumPlayersInput()
+            throws NumberFormatException, IllegalNumPlayersSizeException {
         // Creates an input which can be parsed as an integer greater than 1.
         Scanner inputPlayersPosInt = new Scanner("4");
         int expected = 4;
@@ -106,12 +109,14 @@ public class CardGameTest {
     /**
      * Tests validateNumPlayersInput method with an invalid input of a string.
      *
-     * @throws NumberFormatException          When an input which cannot be parsed as an integer is entered.
-     * @throws IllegalNumPlayersSizeException When an input which can be parsed as an integer, but is too small, is
+     * @throws NumberFormatException          When an input which cannot be parsed as an integer is
      *                                        entered.
+     * @throws IllegalNumPlayersSizeException When an input which can be parsed as an integer, but
+     *                                        is too small, is entered.
      */
     @Test(expected = NumberFormatException.class)
-    public void testValidateNumPlayersInput_IllegalStringValue() throws NumberFormatException, IllegalNumPlayersSizeException {
+    public void testValidateNumPlayersInput_IllegalStringValue()
+            throws NumberFormatException, IllegalNumPlayersSizeException {
         // Creates an input which cannot be passed as an integer (only a string).
         Scanner inputPlayersString = new Scanner("string");
         CardGame.validateNumPlayersInput(inputPlayersString);
@@ -127,7 +132,8 @@ public class CardGameTest {
     }
 
     /**
-     * Tests importPack method by comparing number of lines and contents after file has been parsed by game.
+     * Tests importPack method by comparing number of lines and contents after file has been parsed
+     * by game.
      *
      * @throws IOException When the card pack file does not exist.
      */
@@ -147,7 +153,8 @@ public class CardGameTest {
         assertFalse(notIdentical);
     }
 
-    // Tests dealCards by inputting a test card pack for a two-player game, and checking that every hand and every
+    // Tests dealCards by inputting a test card pack for a two-player game, and checking that
+    // every hand and every
     // deck has four cards.
     @Test
     public void testDealCards() {
@@ -163,7 +170,8 @@ public class CardGameTest {
         assertTrue(evenlyDistributed);
     }
 
-    // Tests genHashMap by inputting a test card pack consisting only of values 2, and then checking the generated
+    // Tests genHashMap by inputting a test card pack consisting only of values 2, and then
+    // checking the generated
     // dictionary for the frequency of value 2, which should be 2 * 8 = 16.
     @Test
     public void testGenHashMap() {
@@ -173,9 +181,9 @@ public class CardGameTest {
     }
 
     /**
-     * Tests countFrequencies method by inputting a test card pack consisting only of values 2, then counting the
-     * frequencies of the pack for a two-player game, and testing whether the game continues, stating that there is
-     * guaranteed to be a winner.
+     * Tests countFrequencies method by inputting a test card pack consisting only of values 2, then
+     * counting the frequencies of the pack for a two-player game, and testing whether the game
+     * continues, stating that there is guaranteed to be a winner.
      */
     @Test
     public void testCountFrequencies() {

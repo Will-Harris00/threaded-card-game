@@ -14,6 +14,7 @@ public class CardDeck {
 
 
     /**
+     *
      */
     public CardDeck() {
     }
@@ -29,6 +30,7 @@ public class CardDeck {
 
     /**
      * @param index The card in the deck to search for and get.
+     *
      * @return The indexed card from the deck.
      */
     public Card getDeckCard(int index) {

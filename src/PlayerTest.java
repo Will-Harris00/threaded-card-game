@@ -42,7 +42,8 @@ public class PlayerTest {
         }
     }
 
-    // Creates mock object for a player, and then assigns three duplicate players to the player array.
+    // Creates mock object for a player, and then assigns three duplicate players to the player
+    // array.
     @Before
     public void playerArrSetUp() {
         plArray = new Player[3];
@@ -79,7 +80,8 @@ public class PlayerTest {
     public void testGetHand() {
     }
 
-    // Checks if the hand size of a player is equal to the hand size obtained from the player in a different way.
+    // Checks if the hand size of a player is equal to the hand size obtained from the player in
+    // a different way.
     @Test
     public void testGetHandSize() {
         int expected = plObject.getHand().size();
@@ -90,7 +92,8 @@ public class PlayerTest {
     public void testGetPlayer() {
     }
 
-    // Generates a card of value 7, and then checks both whether the hand size of the player went up from 4 to 5, and
+    // Generates a card of value 7, and then checks both whether the hand size of the player went
+    // up from 4 to 5, and
     // whether the fifth card has value 7.
     @Test
     public void testAddToHand() {
@@ -110,7 +113,8 @@ public class PlayerTest {
         assertEquals(3, plObject.getHandSize());
     }
 
-    // Creates deck1, then adds cards with values 1, 2, 3, 4, and checks if the first card in deck has value 1.
+    // Creates deck1, then adds cards with values 1, 2, 3, 4, and checks if the first card in
+    // deck has value 1.
     @Test
     public void testDrawValue() {
         CardDeck tDeck = new CardDeck();
@@ -127,7 +131,8 @@ public class PlayerTest {
         assertEquals(expected, result);
     }
 
-    // Creates a hand with three preferred values and one non-preferred value, and checks that the non-preferred
+    // Creates a hand with three preferred values and one non-preferred value, and checks that
+    // the non-preferred
     // value is the one which is discarded.
     @Test
     public void testChooseDiscard() {
@@ -160,11 +165,13 @@ public class PlayerTest {
         assertTrue(correctDiscard);
     }
 
-    // Tests that the discarded card is transferred from one player's hand to the top of the deck of the player on
+    // Tests that the discarded card is transferred from one player's hand to the top of the deck
+    // of the player on
     // the right.
     @Test
     public void testDiscardCard() {
-        // Tests if statement within discardCard method; send from player 2's hand to player 3's deck.
+        // Tests if statement within discardCard method; send from player 2's hand to player 3's
+        // deck.
         int pNumber = 2;
         plArray[pNumber - 1].getHandCard(0).setValue(15);
         Card unwantedCard = plArray[pNumber - 1].getHandCard(0);
@@ -172,7 +179,8 @@ public class PlayerTest {
         int result = dkArray[pNumber].getDeckCard(4).getValue();
         assertEquals(15, result);
 
-        // Tests else statement within discardCard method; send from player 3's hand to player 1's deck (in a three
+        // Tests else statement within discardCard method; send from player 3's hand to player
+        // 1's deck (in a three
         // player game).
         pNumber = 3;
         plArray[pNumber - 1].getHandCard(0).setValue(17);
@@ -182,7 +190,8 @@ public class PlayerTest {
         assertEquals(17, result);
     }
 
-    // Creates a new card, then adds it to the player's hand, and checks that the fifth card is the same as the card
+    // Creates a new card, then adds it to the player's hand, and checks that the fifth card is
+    // the same as the card
     // added.
     @Test
     public void testKeepCard() {
@@ -229,7 +238,8 @@ public class PlayerTest {
     public void testRun() {
     }
 
-    // Adds four cards of value 2 to player2's hand, and checks if player2 has a winning hand afterwards, and is
+    // Adds four cards of value 2 to player2's hand, and checks if player2 has a winning hand
+    // afterwards, and is
     // declared as the winner.
     @Test
     public void testIsWinner() {

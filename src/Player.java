@@ -34,6 +34,7 @@ public class Player extends Thread {
 
     /**
      * @param index The card in the player's hand to search for and get.
+     *
      * @return The indexed card from the player's hand.
      */
     public Card getHandCard(int index) {
@@ -81,7 +82,8 @@ public class Player extends Thread {
     public synchronized Card drawCard() {
         // src.Player picks a card from the top of the deck to their left.
         StringBuilder writeString = new StringBuilder();
-        writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue()).append(" from deck ")
+        writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue())
+                .append(" from deck ")
                 .append(getPlayer());
 
         Card card = CardGame.deckObj[getPlayer() - 1].getDeckCard(0);
@@ -109,12 +111,14 @@ public class Player extends Thread {
         // src.Player discards card to the bottom of the deck to their right.
         if (playerNum != totalPlayers) {
             deckArr[playerNum].addToDeck(unwantedCard);
-            writeString.append("player ").append(playerNum).append(" discards ").append(unwantedCard.getValue())
+            writeString.append("player ").append(playerNum).append(" discards ")
+                    .append(unwantedCard.getValue())
                     .append(" to deck ").append(getPlayer() + 1);
         } else {
             // Edge case when last player discards card back to the first player's deck.
             deckArr[0].addToDeck(unwantedCard);
-            writeString.append("player ").append(totalPlayers).append(" discards a ").append(unwantedCard.getValue())
+            writeString.append("player ").append(totalPlayers).append(" discards a ")
+                    .append(unwantedCard.getValue())
                     .append(" to deck 1");
         }
 
@@ -149,7 +153,8 @@ public class Player extends Thread {
      * Displays the cards in the hand/deck of a player.
      *
      * @param delim  Delimiter to display the player's initial/current/final hand or deck.
-     * @param isHand Boolean to check whether it wants the hand of the player (to view hand) or not (to view deck).
+     * @param isHand Boolean to check whether it wants the hand of the player (to view hand) or not
+     *               (to view deck).
      */
     public void viewArray(String delim, boolean isHand) {
         StringBuilder writeString = new StringBuilder();
@@ -157,7 +162,8 @@ public class Player extends Thread {
         if (isHand) {
             writeString.append("player ").append(getPlayer()).append(delim);
             for (int i = 0; i < CardGame.playerObj[getPlayer() - 1].getHand().size(); i++) {
-                writeString.append(CardGame.playerObj[getPlayer() - 1].getHandCard(i).getValue()).append(" ");
+                writeString.append(CardGame.playerObj[getPlayer() - 1].getHandCard(i).getValue())
+                        .append(" ");
             }
             System.out.println(writeString.toString().trim());
             writeToFile("player", writeString.toString().trim());
@@ -166,7 +172,8 @@ public class Player extends Thread {
         else {
             writeString.append(delim);
             for (int j = 0; j < CardGame.deckObj[getPlayer() - 1].getDeck().size(); j++) {
-                writeString.append(CardGame.deckObj[getPlayer() - 1].getDeckCard(j).getValue()).append(" ");
+                writeString.append(CardGame.deckObj[getPlayer() - 1].getDeckCard(j).getValue())
+                        .append(" ");
             }
             System.out.println(writeString.toString().trim());
             writeToFile("deck", writeString.toString().trim());
@@ -215,8 +222,8 @@ public class Player extends Thread {
     /**
      * Writes the output of actions in the game to a file.
      *
-     * @param delim       Delimiter to decide whether the file being written to is the deck output or the player
-     *                    output.
+     * @param delim       Delimiter to decide whether the file being written to is the deck output
+     *                    or the player output.
      * @param writeString The description of the game action which has just occurred.
      */
     public void writeToFile(String delim, String writeString) {
@@ -233,7 +240,8 @@ public class Player extends Thread {
     /**
      * Creates an output file for the player.
      *
-     * @param delim Delimiter to decide whether the file being created is for the deck output or the player output.
+     * @param delim Delimiter to decide whether the file being created is for the deck output or the
+     *              player output.
      */
     public void createFile(String delim) {
         try {
@@ -257,7 +265,8 @@ public class Player extends Thread {
                 synchronized (this) {
                     Card card = drawCard();
 
-                    strategy(card, getPlayer(), CardGame.playerObj, CardGame.deckObj, CardGame.numPlayers);
+                    strategy(card, getPlayer(), CardGame.playerObj, CardGame.deckObj,
+                            CardGame.numPlayers);
                     // Writes current hand to player output file.
                     if (!CardGame.complete.get()) {
                         viewArray(" current hand is ", true);
@@ -274,8 +283,10 @@ public class Player extends Thread {
         StringBuilder writeString = new StringBuilder();
         // Outputs for players who didn't win.
         if (CardGame.winner.get() != pNumber) {
-            writeString.append("player ").append(CardGame.winner.get()).append(" has informed player ")
-                    .append(pNumber).append(" that player ").append(CardGame.winner.get()).append(" has won");
+            writeString.append("player ").append(CardGame.winner.get())
+                    .append(" has informed player ")
+                    .append(pNumber).append(" that player ").append(CardGame.winner.get())
+                    .append(" has won");
             writeString.append(System.lineSeparator());
             writeString.append("player ").append(pNumber).append(" exits");
             writeString.append(System.lineSeparator());
