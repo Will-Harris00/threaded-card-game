@@ -22,21 +22,21 @@ import static org.junit.Assert.*;
  */
 public class CardGameTest {
     private ArrayList<Integer> createdPack;
-    private Player[] plArray;
-    private CardDeck[] dkArray;
+    private Player[] playerArray;
+    private CardDeck[] deckArray;
 
     // Creates mock object for a player, and then assigns three duplicate players to the player
     // array.
     @Before
     public void objectArraySetUp() {
-        plArray = new Player[2];
-        dkArray = new CardDeck[2];
+        playerArray = new Player[2];
+        deckArray = new CardDeck[2];
         Player plObject = new Player(1);
         CardDeck dkObject = new CardDeck();
         // Adds the player to the player array.
         for (int i = 0; i < 2; i++) {
-            plArray[i] = plObject;
-            dkArray[i] = dkObject;
+            playerArray[i] = plObject;
+            deckArray[i] = dkObject;
         }
     }
 
@@ -54,8 +54,8 @@ public class CardGameTest {
     @After
     public void tearDown() {
         createdPack = null;
-        plArray = null;
-        dkArray = null;
+        playerArray = null;
+        deckArray = null;
     }
 
     @Test
@@ -157,9 +157,9 @@ public class CardGameTest {
     @Test
     public void testDealCards() {
         boolean evenlyDistributed = true;
-        CardGame.dealCards(createdPack, 2, plArray, dkArray);
+        CardGame.dealCards(createdPack, 2, playerArray, deckArray);
 
-        for (Player p : plArray) {
+        for (Player p : playerArray) {
             if (p.getHandSize() != 4) {
                 evenlyDistributed = false;
                 break;
