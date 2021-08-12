@@ -80,7 +80,7 @@ public class Player extends Thread {
      * @return The card from the player's deck.
      */
     public synchronized Card drawCard() {
-        // src.Player picks a card from the top of the deck to their left.
+        // Player picks a card from the top of the deck to their left.
         StringBuilder writeString = new StringBuilder();
         writeString.append("player ").append(getPlayer()).append(" draws a ").append(drawValue())
                 .append(" from deck ")
@@ -108,7 +108,7 @@ public class Player extends Thread {
                                          Player[] playerArr, CardDeck[] deckArr, int totalPlayers) {
         removeCard(unwantedCard, playerNum, playerArr);
         StringBuilder writeString = new StringBuilder();
-        // src.Player discards card to the bottom of the deck to their right.
+        // Player discards card to the bottom of the deck to their right.
         if (playerNum != totalPlayers) {
             deckArr[playerNum].addToDeck(unwantedCard);
             writeString.append("player ").append(playerNum).append(" discards ")
