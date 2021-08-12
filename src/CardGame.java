@@ -1,9 +1,6 @@
 package src;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +98,8 @@ public class CardGame {
 
         // Checks whether the pack of cards is valid.
         try {
-            in = new BufferedReader(new FileReader(packIn));
+            String path = new File("resources/" + packIn).getAbsolutePath();
+            in = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
             System.out.println("Input must be an existing file name.");
             System.exit(1);

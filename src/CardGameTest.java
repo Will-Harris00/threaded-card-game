@@ -139,7 +139,7 @@ public class CardGameTest {
      */
     @Test
     public void testImportPack() throws IOException {
-        String input = "testCardPack.txt";
+        String input = "resources/testCardPack.txt";
         Scanner inputPack = new Scanner(input);
         BufferedReader in = CardGame.validatePackInput(inputPack);
         ArrayList<Integer> importedPack = CardGame.importPack(in, 3);
