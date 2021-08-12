@@ -30,7 +30,7 @@ public class CardGameTest {
     // Creates mock object for a player, and then assigns three duplicate players to the player
     // array.
     @Before
-    public void objectArrSetUp() {
+    public void objectArraySetUp() {
         plArray = new Player[2];
         dkArray = new CardDeck[2];
         plObject = new Player(1);
@@ -82,7 +82,7 @@ public class CardGameTest {
 
     // Tests validateNumPlayersInput with an invalid input of an integer which is too small.
     @Test
-    public void testValidateNumPlayersInput_IllegalSmallValue() {
+    public void testValidateNumPlayersInputIllegalSmallValue() {
         // Creates an input which can be parsed as an integer, but is too small.
         try {
             Scanner inputPlayersString = new Scanner("1");
@@ -95,7 +95,7 @@ public class CardGameTest {
 
     // Tests validateNumPlayersInput with an invalid input of a negative integer value.
     @Test
-    public void testValidateNumPlayersInput_IllegalNegValue() {
+    public void testValidateNumPlayersInputIllegalNegativeValue() {
         // Creates an input which can be parsed as an integer, but is negative.
         try {
             Scanner inputPlayersString = new Scanner("-1");
@@ -115,7 +115,7 @@ public class CardGameTest {
      *                                        is too small, is entered.
      */
     @Test(expected = NumberFormatException.class)
-    public void testValidateNumPlayersInput_IllegalStringValue()
+    public void testValidateNumPlayersInputIllegalStringValue()
             throws NumberFormatException, IllegalNumPlayersSizeException {
         // Creates an input which cannot be passed as an integer (only a string).
         Scanner inputPlayersString = new Scanner("string");
@@ -125,7 +125,7 @@ public class CardGameTest {
 
     // Tests validatePackInput method with an invalid non-existing file name.
     @Test(expected = FileNotFoundException.class)
-    public void testValidatePackInput_IllegalFileName() {
+    public void testValidatePackInputIllegalFileName() {
         Scanner inputPack = new Scanner("invalid");
         CardGame.validatePackInput(inputPack);
         fail("FileNotFoundException should have been thrown.");
@@ -174,7 +174,7 @@ public class CardGameTest {
     // checking the generated
     // dictionary for the frequency of value 2, which should be 2 * 8 = 16.
     @Test
-    public void testGenHashMap() {
+    public void testGenerateHashMap() {
         Map<Integer, Integer> dict = CardGame.genHashMap(createdPack);
         int frequency = dict.get(2);
         assertEquals(16, frequency);

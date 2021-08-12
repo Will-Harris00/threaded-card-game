@@ -45,7 +45,7 @@ public class PlayerTest {
     // Creates mock object for a player, and then assigns three duplicate players to the player
     // array.
     @Before
-    public void playerArrSetUp() {
+    public void playerArraySetUp() {
         plArray = new Player[3];
         // Adds the player to the player array.
         for (int i = 0; i < 3; i++) {
@@ -55,7 +55,7 @@ public class PlayerTest {
 
     // Creates mock object for a deck, and then assigns three duplicate decks to the deck array.
     @Before
-    public void deckArrSetUp() {
+    public void deckArraySetUp() {
         dkArray = new CardDeck[3];
         for (int i = 0; i < 3; i++) {
             dkArray[i] = dkObject;
@@ -108,7 +108,7 @@ public class PlayerTest {
 
     // Removes a card from a player's hand and checks if the size of hand went down from 4 to 3.
     @Test
-    public void testRemFromHand() {
+    public void testRemoveFromHand() {
         plObject.remFromHand(0);
         assertEquals(3, plObject.getHandSize());
     }
@@ -215,27 +215,6 @@ public class PlayerTest {
 
         int result = plArray[pNumber - 1].getHandSize();
         assertEquals(3, result);
-    }
-
-    @Test
-    public void testStrategy() {
-    }
-
-    @Test
-    public void testViewArray() {
-
-    }
-
-    @Test
-    public void testWriteToFile() {
-    }
-
-    @Test
-    public void testCreateFile() {
-    }
-
-    @Test
-    public void testRun() {
     }
 
     // Adds four cards of value 2 to player2's hand, and checks if player2 has a winning hand
